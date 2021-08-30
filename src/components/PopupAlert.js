@@ -21,8 +21,7 @@ export default function PopupAlert( props ) {
         <DialogTitle id="alert-dialog-title">{"Sikeres regisztráció!"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Egy e-mailt küldtünk a megadott címre. Kérjük visszaigazolni a regisztrációt
-            a benne található linken keresztül!
+            {props.text}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

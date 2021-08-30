@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import Copyright from './Copyright';
@@ -23,7 +23,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useStyles } from '../styles/signInUpStyle';
 import { useHistory } from 'react-router-dom';
 
-export default function SignIn( props ) {
+export default function SignIn(props) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -40,7 +40,7 @@ export default function SignIn( props ) {
   };
 
   const handleChange = () => {
-      history.push('/signup');
+    history.push('/signup');
   }
 
   const handleChange2 = () => {
@@ -55,14 +55,21 @@ export default function SignIn( props ) {
       password: password
     }
 
-    axios.post(process.env.REACT_APP_API_URL + '/signin', data)
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${props.token}`
+    }
+
+    axios.post(process.env.REACT_APP_API_URL + '/signin', data, {headers: headers})
     .then((response) => {
       if(response.data.code){
         setMessage(response.data.message);
         setOpen(true);
       }
-      else
+      else{
+        props.setToken(response.data.token);
         history.push('/' + response.data.role);
+      }
     })
   }
 
@@ -72,6 +79,8 @@ export default function SignIn( props ) {
         open={props.open}
         handleClose={props.handleClose}
         handleClickOpen={props.handleClickOpen}
+        text="Egy e-mailt küldtünk a megadott címre. Kérjük visszaigazolni a regisztrációt
+          a benne található linken keresztül!"
       />
       <CssBaseline />
         <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -90,6 +99,7 @@ export default function SignIn( props ) {
                   required
                   fullWidth
                   id="email"
+                  type="email"
                   label="E-mail cím"
                   name="email"
                   onChange={e => setEmail(e.target.value)}

@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import Copyright from './Copyright';
@@ -22,7 +22,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useStyles } from '../styles/signInUpStyle';
 import { useHistory } from 'react-router-dom';
 
-export default function SignUp( props ) {
+export default function SignUp(props) {
     const classes = useStyles();
     const history = useHistory();
 
@@ -70,62 +70,62 @@ export default function SignUp( props ) {
         <Grid container component="main" className={classes.root}>
         <CssBaseline />
             <Grid item xs={false} sm={4} md={7} className={classes.image} />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                    <div className={classes.paper}>
-                        <Avatar className={classes.avatar}>
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
                         Regisztráció
-                        </Typography>
-                        <form className={classes.form} onSubmit={handleSubmit} noValidate>
+                    </Typography>
+                    <form className={classes.form} onSubmit={handleSubmit} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
-                            <TextField
-                                name="team"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="team"
-                                label="Csapat neve"
-                                onChange={e => setTeam(e.target.value)}
-                                autoFocus
-                            />
+                                <TextField
+                                    name="team"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="team"
+                                    label="Csapat neve"
+                                    onChange={e => setTeam(e.target.value)}
+                                    autoFocus
+                                />
                             </Grid>
                             <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="E-mail cím"
-                                name="email"
-                                onChange={e => setEmail(e.target.value)}
-                            />
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="E-mail cím"
+                                    name="email"
+                                    onChange={e => setEmail(e.target.value)}
+                                />
                             </Grid>
                             <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Jelszó"
-                                type="password"
-                                id="password"
-                                onChange={e => setPassword(e.target.value)}
-                            />
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Jelszó"
+                                    type="password"
+                                    id="password"
+                                    onChange={e => setPassword(e.target.value)}
+                                />
                             </Grid>
                             <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password2"
-                                label="Jelszó újra"
-                                type="password"
-                                id="password2"
-                                onChange={e => setPassword2(e.target.value)}
-                            />
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    name="password2"
+                                    label="Jelszó újra"
+                                    type="password"
+                                    id="password2"
+                                    onChange={e => setPassword2(e.target.value)}
+                                />
                             </Grid>
                         </Grid>
                         <Button
