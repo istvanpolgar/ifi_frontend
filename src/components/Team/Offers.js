@@ -7,7 +7,6 @@ import {
   Toolbar,
   IconButton,
   Box,
-  Avatar,
   Table,
   TableBody,
   TableCell,
@@ -218,37 +217,23 @@ export default function Trade(props) {
             </AppBar>
             <div className={classes.info}>
                 <div className={classes.box}>
-                    <Box display="flex" p={1}>
-                        <Box p={1} flexGrow={1}>
-                            <Box 
-                                display="flex"
-                                alignItems="flex-start"
-                            >
-                                <Box p={1}>
-                                    <Avatar alt="XPs" src="/images/xp.png" />
-                                </Box>
-                                <Box p={2}>
-                                    <ThemeProvider theme={theme}>
-                                        <Typography variant="h5">
-                                            {xp}
-                                        </Typography>
-                                    </ThemeProvider>
-                                </Box>
+                    <Box display="flex" >
+                        <Box flexGrow={1} p={1}>
+                        <Box 
+                            display="flex"
+                            alignItems="flex-start"
+                        >
+                            <Box p={1}>
+                            <img alt="XPs" src="/images/xp.png" className={classes.bar}/>
                             </Box>
-                        </Box>
-                        <Box p={1} flexGrow={1}>
-                            <Box 
-                                display="flex"
-                                alignItems="flex-start"
-                            >
-                                <Box p={2}>
+                            <Box p={2}>
                                 <ThemeProvider theme={theme}>
                                     <Typography variant="h5">
-                                        Maradék napi pont: {dailyPoint}
+                                        {xp}
                                     </Typography>
                                 </ThemeProvider>
-                                </Box>
                             </Box>
+                        </Box>
                         </Box>
                         <Box p={1}>
                             <Box 
@@ -256,14 +241,35 @@ export default function Trade(props) {
                                 alignItems="flex-start"
                             >
                                 <Box p={1}>
-                                    <Avatar alt="Points" src="/images/point.png" />
+                                    <img alt="Poitns" src="/images/point.png" className={classes.bar}/>
                                 </Box>
                                 <Box p={2}>
-                                <ThemeProvider theme={theme}>
-                                    <Typography variant="h5">
-                                        {point}
-                                    </Typography>
-                                </ThemeProvider>
+                                    <ThemeProvider theme={theme}>
+                                        <Typography variant="h5">
+                                            {point}
+                                        </Typography>
+                                    </ThemeProvider>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                    </div>
+                    <div className={classes.box}>
+                    <Box display="flex" justifyContent="center">
+                        <Box p={1}>
+                            <Box 
+                                display="flex"
+                                alignItems="center"
+                            >
+                                <Box p={1}>
+                                    <img alt="Napi pont" src="/images/dailypoint.png" className={classes.bar}/>
+                                </Box>
+                                <Box p={2}>
+                                    <ThemeProvider theme={theme}>
+                                        <Typography variant="h5">
+                                            {dailyPoint}
+                                        </Typography>
+                                    </ThemeProvider>
                                 </Box>
                             </Box>
                         </Box>

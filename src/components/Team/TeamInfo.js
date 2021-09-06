@@ -7,7 +7,6 @@ import {
   Toolbar,
   IconButton,
   Box,
-  Avatar,
   Table,
   TableBody,
   TableCell,
@@ -59,6 +58,7 @@ export default function TeamInfo(props) {
   const [xp, setXp] = useState(0);
   const [point, setPoint] = useState(0);
   const [dailyPoint, setDailyPoint] = useState(0);
+  const [hourXp, setHourXp] = useState(0);
   const [iron, setIron] = useState(0);
   const [bronze, setBronze] = useState(0);
   const [silver, setSilver] = useState(0);
@@ -82,6 +82,7 @@ export default function TeamInfo(props) {
     .then((response) => {
       if(!response.data.code){
         setXp(response.data.stats.xp);
+        setHourXp(response.data.hxp);
         setPoint(response.data.stats.point);
         setDailyPoint(response.data.stats.daily_point);
         setIron(response.data.stats.ores.iron);
@@ -176,33 +177,19 @@ export default function TeamInfo(props) {
       </AppBar>
       <div className={classes.info}>
         <div className={classes.box}>
-          <Box display="flex" p={1}>
-            <Box p={1} flexGrow={1}>
+          <Box display="flex" >
+            <Box flexGrow={1} p={1}>
               <Box 
                 display="flex"
                 alignItems="flex-start"
               >
                 <Box p={1}>
-                  <Avatar alt="XPs" src="/images/xp.png" />
+                  <img alt="XPs" src="/images/xp.png" className={classes.bar}/>
                 </Box>
                 <Box p={2}>
                   <ThemeProvider theme={theme}>
                     <Typography variant="h5">
                         {xp}
-                    </Typography>
-                  </ThemeProvider>
-                </Box>
-              </Box>
-            </Box>
-            <Box p={1} flexGrow={1}>
-              <Box 
-                display="flex"
-                alignItems="flex-start"
-              >
-                <Box p={2}>
-                  <ThemeProvider theme={theme}>
-                    <Typography variant="h5">
-                        Maradék napi pont: {dailyPoint}
                     </Typography>
                   </ThemeProvider>
                 </Box>
@@ -214,12 +201,50 @@ export default function TeamInfo(props) {
                 alignItems="flex-start"
               >
                 <Box p={1}>
-                  <Avatar alt="Poitns" src="/images/point.png" />
+                  <img alt="Poitns" src="/images/point.png" className={classes.bar}/>
                 </Box>
                 <Box p={2}>
                   <ThemeProvider theme={theme}>
                     <Typography variant="h5">
                         {point}
+                    </Typography>
+                  </ThemeProvider>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </div>
+        <div className={classes.box}>
+          <Box display="flex" justifyContent="center">
+            <Box flexGrow={1} p={1}>
+              <Box 
+                display="flex"
+                alignItems="center"
+              >
+                <Box p={1}>
+                  <img alt="Óránkénti XP" src="/images/hourxp.png" className={classes.bar}/>
+                </Box>
+                <Box p={2}>
+                  <ThemeProvider theme={theme}>
+                    <Typography variant="h5">
+                        {hourXp}
+                    </Typography>
+                  </ThemeProvider>
+                </Box>
+              </Box>
+            </Box>
+            <Box p={1}>
+              <Box 
+                display="flex"
+                alignItems="center"
+              >
+                <Box p={1}>
+                  <img alt="Napi pont" src="/images/dailypoint.png" className={classes.bar}/>
+                </Box>
+                <Box p={2}>
+                  <ThemeProvider theme={theme}>
+                    <Typography variant="h5">
+                        {dailyPoint}
                     </Typography>
                   </ThemeProvider>
                 </Box>

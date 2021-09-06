@@ -129,20 +129,29 @@ export default function AddPoint(props) {
       'Authorization': `Bearer ${props.token}`
     }
 
-    axios.post(process.env.REACT_APP_API_URL + '/addpoint', data, {headers: headers})
-      .then((response) => {
-      if(!response.data.code){
+    if(!point) {
+      setOpen(true);
+      setText("Add meg az Pontot!");
+    }
+    else
+      if(!team1) {
         setOpen(true);
-        setChange(!change);
-        setTeam1('');
-        setPoint(0);
-        setText(`Sikeresen hozzáadtál a(z) ${team1} csapatnak ${point} pontot!`);
+        setText("Add meg az csapatot!");
       }
-      else{
-          setOpen(true);
-          setText(response.data.message);
-      }
-    });
+      else
+        axios.post(process.env.REACT_APP_API_URL + '/addpoint', data, {headers: headers})
+          .then((response) => {
+          if(!response.data.code){
+            setOpen(true);
+            setChange(!change);
+            setPoint(0);
+            setText(`Sikeresen hozzáadtál a(z) ${team1} csapatnak ${point} pontot!`);
+          }
+          else{
+              setOpen(true);
+              setText(response.data.message);
+          }
+        });
   }
 
   const handleTake = () => {
@@ -156,20 +165,29 @@ export default function AddPoint(props) {
       'Authorization': `Bearer ${props.token}`
     }
 
-    axios.post(process.env.REACT_APP_API_URL + '/takepoint', data, {headers: headers})
-      .then((response) => {
-      if(!response.data.code){
+    if(!point) {
+      setOpen(true);
+      setText("Add meg az Pontot!");
+    }
+    else
+      if(!team1) {
         setOpen(true);
-        setChange(!change);
-        setTeam1('');
-        setPoint(0);
-        setText(`Sikeresen elvettél a(z) ${team1} csapattól ${point} pontot!`);
+        setText("Add meg az csapatot!");
       }
-      else{
-          setOpen(true);
-          setText(response.data.message);
-      }
-    });
+      else
+        axios.post(process.env.REACT_APP_API_URL + '/takepoint', data, {headers: headers})
+          .then((response) => {
+          if(!response.data.code){
+            setOpen(true);
+            setChange(!change);
+            setPoint(0);
+            setText(`Sikeresen elvettél a(z) ${team1} csapattól ${point} pontot!`);
+          }
+          else{
+              setOpen(true);
+              setText(response.data.message);
+          }
+        });
   }
 
   const handlePoint = () => {
@@ -183,20 +201,29 @@ export default function AddPoint(props) {
       'Authorization': `Bearer ${props.token}`
     }
     
-    axios.post(process.env.REACT_APP_API_URL + '/ores_to_points', data, {headers: headers})
-      .then((response) => {
-      if(!response.data.code){
+    if(!otp) {
+      setOpen(true);
+      setText("Add meg a feladat pontszámát!");
+    }
+    else
+      if(!team2) {
         setOpen(true);
-        setChange(!change);
-        setTeam2('');
-        setPoint(0);
-        setText(`A(z) ${team2} csapatnak beváltottál egy ${otp} pontos feladatot!`);
+        setText("Add meg az csapatot!");
       }
-      else{
-          setOpen(true);
-          setText(response.data.message);
-      }
-    });
+      else
+        axios.post(process.env.REACT_APP_API_URL + '/ores_to_points', data, {headers: headers})
+          .then((response) => {
+          if(!response.data.code){
+            setOpen(true);
+            setChange(!change);
+            setPoint(0);
+            setText(`A(z) ${team2} csapatnak beváltottál egy ${otp} pontos feladatot!`);
+          }
+          else{
+              setOpen(true);
+              setText(response.data.message);
+          }
+        });
   }
 
   return (
@@ -235,6 +262,7 @@ export default function AddPoint(props) {
                     <Select 
                       native 
                       fullWidth
+                      variant="outlined"
                       required
                       name="team1"
                       id="team1"
@@ -252,6 +280,7 @@ export default function AddPoint(props) {
                       <TextField
                         id="point"
                         fullWidth
+                        variant="outlined"
                         onChange={e => setPoint(e.target.value)}
                         label="Pont"
                         value={point}
@@ -304,6 +333,7 @@ export default function AddPoint(props) {
                     <Select 
                       native 
                       fullWidth
+                      variant="outlined"
                       required
                       value={team2}
                       name="team2"
@@ -323,6 +353,7 @@ export default function AddPoint(props) {
                       <Select 
                         native 
                         fullWidth
+                        variant="outlined"
                         required
                         value={otp}
                         name="point"

@@ -6,13 +6,13 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0),
     margin: theme.spacing(0),
     height: '100vh',
-    width: '100vw',
+    width: '100%',
   },
   appbar: {
     padding: theme.spacing(0),
     margin: theme.spacing(0),
     height: '8vh',
-    width: '100vw',
+    width: '100%',
   },
   text: {
     margin: theme.spacing(3),
@@ -53,8 +53,12 @@ export const useStyles = makeStyles((theme) => ({
     height: '5vh',
     marginRight: theme.spacing(3),
   },
+  bar: {
+    width: '5vh',
+    height: '5vh',
+  },
   form: {
-    width: '100vh', // Fix IE 11 issue.
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {

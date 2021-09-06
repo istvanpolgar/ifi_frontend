@@ -32,6 +32,7 @@ export default function SetUp(props) {
 
   const [dailyPoint, setDailyPoint] = useState(0);
   const [starterXp, setStarterXp] = useState(0);
+  const [hourXp, setHourXp] = useState(0);
   const [priceIron, setPriceIron] = useState(0);
   const [priceBronze, setPriceBronze] = useState(0);
   const [priceSilver, setPriceSilver] = useState(0);
@@ -85,6 +86,7 @@ export default function SetUp(props) {
         if(!response.data.code){
             setDailyPoint(response.data.dp);
             setStarterXp(response.data.xp);
+            setHourXp(response.data.hxp);
             setPriceIron(response.data.prices.iron);
             setPriceBronze(response.data.prices.bronze);
             setPriceSilver(response.data.prices.silver);
@@ -197,13 +199,14 @@ export default function SetUp(props) {
               <form className={classes.form} onSubmit={handleSubmit} noValidate>
                   <div className={classes.margin}>
                     <Grid container spacing={1} alignItems="flex-end">
-                      <Grid item>
+                      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                         <img src='./images/xp.png' alt='XP' className={classes.input_icon}/>
                       </Grid>
                       <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
                         <TextField
                           id="starter_xp"
                           fullWidth
+                          variant="outlined"
                           onChange={e => setStarterXp(e.target.value)}
                           label="Csapatok kezdeti XP-je"
                           value={starterXp}
@@ -216,13 +219,14 @@ export default function SetUp(props) {
                   </div>
                   <div className={classes.margin}>
                     <Grid container spacing={1} alignItems="flex-end">
-                      <Grid item>
+                      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                         <img src='./images/iron.png' alt='Vas ára' className={classes.input_icon}/>
                       </Grid>
                       <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
                         <TextField
                             id="price_iron"
                             fullWidth
+                            variant="outlined"
                             onChange={e => setPriceIron(e.target.value)}
                             label="Vas ára"
                             value={priceIron}
@@ -235,13 +239,14 @@ export default function SetUp(props) {
                   </div>
                   <div className={classes.margin}>
                     <Grid container spacing={1} alignItems="flex-end">
-                      <Grid item>
+                      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                         <img src='./images/bronze.png' alt='Bronz ára' className={classes.input_icon}/>
                       </Grid>
                       <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
                         <TextField
                             id="bronze_iron"
                             fullWidth
+                            variant="outlined"
                             onChange={e => setPriceBronze(e.target.value)}
                             label="Bronz ára"
                             value={priceBronze}
@@ -254,13 +259,14 @@ export default function SetUp(props) {
                   </div>
                   <div className={classes.margin}>
                     <Grid container spacing={1} alignItems="flex-end">
-                      <Grid item>
+                      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                         <img src='./images/silver.png' alt='Ezüst ára' className={classes.input_icon}/>
                       </Grid>
                       <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
                         <TextField
                             id="price_silver"
                             fullWidth
+                            variant="outlined"
                             onChange={e => setPriceSilver(e.target.value)}
                             label="Ezüst ára"
                             value={priceSilver}
@@ -273,13 +279,14 @@ export default function SetUp(props) {
                   </div>
                   <div className={classes.margin}>
                     <Grid container spacing={1} alignItems="flex-end">
-                      <Grid item>
+                      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                         <img src='./images/gold.png' alt='Arany ára' className={classes.input_icon}/>
                       </Grid>
                       <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
                         <TextField
                             id="price_gold"
                             fullWidth
+                            variant="outlined"
                             onChange={e => setPriceGold(e.target.value)}
                             label="Arany ára"
                             value={priceGold}
@@ -292,13 +299,14 @@ export default function SetUp(props) {
                   </div>
                   <div className={classes.margin}>
                     <Grid container spacing={1} alignItems="flex-end">
-                      <Grid item>
+                      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                         <img src='./images/diamond.png' alt='Gyémánt ára' className={classes.input_icon}/>
                       </Grid>
                       <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
                         <TextField
                             id="price_diamond"
                             fullWidth
+                            variant="outlined"
                             onChange={e => setPriceDiamond(e.target.value)}
                             label="Gyémánt ára"
                             value={priceDiamond}
@@ -311,13 +319,14 @@ export default function SetUp(props) {
                   </div>
                   <div className={classes.margin}>
                     <Grid container spacing={1} alignItems="flex-end">
-                      <Grid item>
+                      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                         <img src='./images/ifirald.png' alt='Ifiráld ára' className={classes.input_icon}/>
                       </Grid>
                       <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
                         <TextField
                             id="price_ifirald"
                             fullWidth
+                            variant="outlined"
                             onChange={e => setPriceIfirald(e.target.value)}
                             label="Ifiráld ára"
                             value={priceIfirald}
@@ -330,13 +339,14 @@ export default function SetUp(props) {
                   </div>
                   <div className={classes.margin}>
                     <Grid container spacing={1} alignItems="flex-end">
-                      <Grid item>
+                      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
                         <img src='./images/dailypoint.png' alt='Napi pont' className={classes.input_icon}/>
                       </Grid>
                       <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
                         <TextField
                             id="daily_points"
                             fullWidth
+                            variant="outlined"
                             onChange={e => setDailyPoint(e.target.value)}
                             label="Napi beváltható pontszám"
                             value={dailyPoint}
@@ -349,13 +359,32 @@ export default function SetUp(props) {
                   </div>
                   <div className={classes.margin}>
                     <Grid container spacing={1} alignItems="flex-end">
-                      <Grid item>
+                      <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+                        <img src='./images/hourxp.png' alt='Óránkénti XP' className={classes.input_icon}/>
+                      </Grid>
+                      <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
+                        <TextField
+                            id="hour_xp"
+                            fullWidth
+                            variant="outlined"
+                            onChange={e => setHourXp(e.target.value)}
+                            label="Óránkénti XP"
+                            value={hourXp}
+                            type="number"
+                            name="hour_xp"
+                            inputProps= {{ min:0, max: 1000 }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </div>
+                  <div className={classes.margin}>
+                    <Grid container spacing={1} alignItems="flex-end">
+                      <Grid item >
                         <img src='./images/100.png' alt='100 pont' className={classes.input_icon}/>
                       </Grid>
                       <Grid item>
                         <TextField
                             id="iron"
-                            fullWidth
                             onChange={set100}
                             label="Vas"
                             value={houndred1.iron}
@@ -367,7 +396,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="bronze"
-                            fullWidth
                             onChange={set100}
                             label="Bronz"
                             value={houndred1.bronze}
@@ -379,7 +407,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="silver"
-                            fullWidth
                             onChange={set100}
                             label="Ezüst"
                             value={houndred1.silver}
@@ -391,7 +418,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="gold"
-                            fullWidth
                             onChange={set100}
                             label="arany"
                             value={houndred1.gold}
@@ -403,7 +429,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="diamond"
-                            fullWidth
                             onChange={set100}
                             label="Gyémánt"
                             value={houndred1.diamond}
@@ -415,7 +440,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="ifirald"
-                            fullWidth
                             onChange={set100}
                             label="Ifiráld"
                             value={houndred1.ifirald}
@@ -434,7 +458,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="iron"
-                            fullWidth
                             onChange={set200}
                             label="Vas"
                             value={houndred2.iron}
@@ -446,7 +469,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="bronze"
-                            fullWidth
                             onChange={set200}
                             label="Bronz"
                             value={houndred2.bronze}
@@ -458,7 +480,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="silver"
-                            fullWidth
                             onChange={set200}
                             label="Ezüst"
                             value={houndred2.silver}
@@ -470,7 +491,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="gold"
-                            fullWidth
                             onChange={set200}
                             label="arany"
                             value={houndred2.gold}
@@ -482,7 +502,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="diamond"
-                            fullWidth
                             onChange={set200}
                             label="Gyémánt"
                             value={houndred2.diamond}
@@ -494,7 +513,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="ifirald"
-                            fullWidth
                             onChange={set200}
                             label="Ifiráld"
                             value={houndred2.ifirald}
@@ -513,7 +531,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="iron"
-                            fullWidth
                             onChange={set300}
                             label="Vas"
                             value={houndred3.iron}
@@ -525,7 +542,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="bronze"
-                            fullWidth
                             onChange={set300}
                             label="Bronz"
                             value={houndred3.bronze}
@@ -537,7 +553,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="silver"
-                            fullWidth
                             onChange={set300}
                             label="Ezüst"
                             value={houndred3.silver}
@@ -549,7 +564,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="gold"
-                            fullWidth
                             onChange={set300}
                             label="arany"
                             value={houndred3.gold}
@@ -561,7 +575,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="diamond"
-                            fullWidth
                             onChange={set300}
                             label="Gyémánt"
                             value={houndred3.diamond}
@@ -573,7 +586,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="ifirald"
-                            fullWidth
                             onChange={set300}
                             label="Ifiráld"
                             value={houndred3.ifirald}
@@ -592,7 +604,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="iron"
-                            fullWidth
                             onChange={set400}
                             label="Vas"
                             value={houndred4.iron}
@@ -604,7 +615,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="bronze"
-                            fullWidth
                             onChange={set400}
                             label="Bronz"
                             value={houndred4.bronze}
@@ -616,7 +626,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="silver"
-                            fullWidth
                             onChange={set400}
                             label="Ezüst"
                             value={houndred4.silver}
@@ -628,7 +637,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="gold"
-                            fullWidth
                             onChange={set400}
                             label="arany"
                             value={houndred4.gold}
@@ -640,7 +648,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="diamond"
-                            fullWidth
                             onChange={set400}
                             label="Gyémánt"
                             value={houndred4.diamond}
@@ -652,7 +659,6 @@ export default function SetUp(props) {
                       <Grid item>
                         <TextField
                             id="ifirald"
-                            fullWidth
                             onChange={set400}
                             label="Ifiráld"
                             value={houndred4.ifirald}

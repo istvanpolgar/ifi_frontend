@@ -196,33 +196,19 @@ export default function Shop(props) {
             </AppBar>
             <div className={classes.info}>
                 <div className={classes.box}>
-                    <Box display="flex" p={1}>
-                        <Box p={1} flexGrow={1}>
+                    <Box display="flex" >
+                        <Box flexGrow={1} p={1}>
                             <Box 
                                 display="flex"
                                 alignItems="flex-start"
                             >
                                 <Box p={1}>
-                                    <Avatar alt="XPs" src="/images/xp.png" />
+                                <img alt="XPs" src="/images/xp.png" className={classes.bar}/>
                                 </Box>
-                                <Box p={2}>
-                                    <ThemeProvider theme={theme}>
-                                        <Typography variant="h5">
-                                            {xp}
-                                        </Typography>
-                                    </ThemeProvider>
-                                </Box>
-                            </Box>
-                        </Box>
-                        <Box p={1} flexGrow={1}>
-                            <Box 
-                                display="flex"
-                                alignItems="flex-start"
-                            >
                                 <Box p={2}>
                                 <ThemeProvider theme={theme}>
                                     <Typography variant="h5">
-                                        Maradék napi pont: {dailyPoint}
+                                        {xp}
                                     </Typography>
                                 </ThemeProvider>
                                 </Box>
@@ -234,19 +220,40 @@ export default function Shop(props) {
                                 alignItems="flex-start"
                             >
                                 <Box p={1}>
-                                    <Avatar alt="Points" src="/images/point.png" />
+                                    <img alt="Poitns" src="/images/point.png" className={classes.bar}/>
+                                </Box>
+                                <Box p={2}>
+                                    <ThemeProvider theme={theme}>
+                                        <Typography variant="h5">
+                                            {point}
+                                        </Typography>
+                                    </ThemeProvider>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                </div>
+                <div className={classes.box}>
+                    <Box display="flex" justifyContent="center">
+                        <Box p={1}>
+                            <Box 
+                                display="flex"
+                                alignItems="center"
+                            >
+                                <Box p={1}>
+                                <img alt="Napi pont" src="/images/dailypoint.png" className={classes.bar}/>
                                 </Box>
                                 <Box p={2}>
                                 <ThemeProvider theme={theme}>
                                     <Typography variant="h5">
-                                        {point}
+                                        {dailyPoint}
                                     </Typography>
                                 </ThemeProvider>
                                 </Box>
                             </Box>
                         </Box>
                     </Box>
-                </div>
+                    </div>
                 <Box
                     display="flex"
                     flexWrap="wrap"
@@ -254,21 +261,6 @@ export default function Shop(props) {
                     p={1}
                     m={1}
                 >
-                    <Box p={1} flexGrow={1}>
-                        <Box 
-                            display="flex"
-                            alignItems="flex-start"
-                            justifyContent="center"
-                        >
-                            <Box p={2}>
-                                <ThemeProvider theme={theme}>
-                                    <Typography variant="h5">
-                                        Készlet: 
-                                    </Typography>
-                                </ThemeProvider>
-                            </Box>
-                        </Box>
-                    </Box>
                     <Box p={1} flexGrow={1}>
                         <Box 
                             display="flex"

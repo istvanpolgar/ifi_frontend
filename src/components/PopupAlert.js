@@ -18,7 +18,7 @@ export default function PopupAlert( props ) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Sikeres regisztráció!"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Üzenet"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {props.text}
