@@ -29,10 +29,14 @@ export const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(3),
-    width: theme.spacing(7),
-    height: theme.spacing(7),
+    width: '10vh',
+    height: '10vh',
   },
   text: {
     margin: theme.spacing(3),
+  },
+  icon: {
+    width: '5vh',
+    height: '5vh',
   }
 }));

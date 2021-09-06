@@ -18,7 +18,7 @@ import OreCard from '../OreCard';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { useHistory } from 'react-router-dom';
-import { useStyles } from '../../styles/teamPagesStyle';
+import { useStyles } from '../../styles/teamAndOrganizerPagesStyle';
 
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 
@@ -32,6 +32,7 @@ export default function Shop(props) {
 
     const [xp, setXp] = useState(0);
     const [point, setPoint] = useState(0);
+    const [dailyPoint, setDailyPoint] = useState(0);
 
     const [iron, setIron] = useState();
     const [bronze, setBronze] = useState();
@@ -80,6 +81,7 @@ export default function Shop(props) {
             if(!response.data.code){
                 setXp(response.data.stats.xp);
                 setPoint(response.data.stats.point);
+                setDailyPoint(response.data.stats.daily_point);
                 setIron(response.data.stats.ores.iron);
                 setBronze(response.data.stats.ores.bronze);
                 setSilver(response.data.stats.ores.silver);
@@ -116,50 +118,61 @@ export default function Shop(props) {
             setText("Nem vettél semmit!");
         }
         else
-            if( total_price > xp){
+            if(ironBuy < 0 || bronzeBuy < 0 || silverBuy < 0 || goldBuy < 0 || diamondBuy < 0 || ifiraldBuy < 0){
                 setOpen(true);
-                setText("Több Ifi XP szükséges a vásárláshoz!");
+                setText("Negatív értéket adtál meg!");
             }
-            else {
-                const data = {
-                    price: total_price,
-                    iron: ironBuy,
-                    bronze: bronzeBuy,
-                    silver: silverBuy,
-                    gold: goldBuy,
-                    diamond: diamondBuy,
-                    ifirald: ifiraldBuy
+            else
+                if( total_price > xp){
+                    setOpen(true);
+                    setText("Több Ifi XP szükséges a vásárláshoz!");
                 }
-        
-                const headers = {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${props.token}`
+                else {
+                    const data = {
+                        price: total_price,
+                        iron: ironBuy,
+                        bronze: bronzeBuy,
+                        silver: silverBuy,
+                        gold: goldBuy,
+                        diamond: diamondBuy,
+                        ifirald: ifiraldBuy
+                    }
+            
+                    const headers = {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${props.token}`
+                    }
+
+                    axios.post(process.env.REACT_APP_API_URL + '/shop', data, {headers: headers})
+                        .then((response) => {
+                        if(!response.data.code){
+                            let ores = "";
+                            if(ironBuy > 0) ores += ironBuy + " - vas, ";
+                            if(bronzeBuy > 0) ores += bronzeBuy + " - bronz, ";
+                            if(silverBuy > 0) ores += silverBuy + " - ezüst, ";
+                            if(goldBuy > 0) ores += goldBuy + " - arany, ";
+                            if(diamondBuy > 0) ores += diamondBuy + " - gyémánt, ";
+                            if(ifiraldBuy > 0) ores += ifiraldBuy + " - ifiráld, ";
+
+                            ores = ores.slice(0, -2)
+
+                            setChange(!change);
+                            setOpen(true);
+                            setIronBuy(0);
+                            setBronzeBuy(0);
+                            setSilverBuy(0);
+                            setGoldBuy(0);
+                            setDiamondBuy(0);
+                            setIfiraldBuy(0);
+                            setText(`Sikeresen megvásároltad a következő érceket: ${ores} és ez ${total_price} Ifi XP-be került!`);
+                        }
+                        else
+                        {
+                            setOpen(true);
+                            setText(response.data.message);
+                        }
+                    });
                 }
-
-                axios.post(process.env.REACT_APP_API_URL + '/shop', data, {headers: headers})
-                    .then((response) => {
-                    if(!response.data.code){
-                        let ores = "";
-                        if(ironBuy > 0) ores += ironBuy + " - vas, ";
-                        if(bronzeBuy > 0) ores += bronzeBuy + " - bronz, ";
-                        if(silverBuy > 0) ores += silverBuy + " - ezüst, ";
-                        if(goldBuy > 0) ores += goldBuy + " - arany, ";
-                        if(diamondBuy > 0) ores += diamondBuy + " - gyémánt, ";
-                        if(ifiraldBuy > 0) ores += ifiraldBuy + " - ifiráld, ";
-
-                        ores = ores.slice(0, -2)
-
-                        setChange(!change);
-                        setOpen(true);
-                        setText(`Sikeresen megvásároltad a következő érceket: ${ores} és ez ${total_price} Ifi XP-be került!`);
-                    }
-                    else
-                    {
-                        setOpen(true);
-                        setText(response.data.message);
-                    }
-                });
-            }
     }
 
     return (
@@ -198,6 +211,20 @@ export default function Shop(props) {
                                             {xp}
                                         </Typography>
                                     </ThemeProvider>
+                                </Box>
+                            </Box>
+                        </Box>
+                        <Box p={1} flexGrow={1}>
+                            <Box 
+                                display="flex"
+                                alignItems="flex-start"
+                            >
+                                <Box p={2}>
+                                <ThemeProvider theme={theme}>
+                                    <Typography variant="h5">
+                                        Maradék napi pont: {dailyPoint}
+                                    </Typography>
+                                </ThemeProvider>
                                 </Box>
                             </Box>
                         </Box>

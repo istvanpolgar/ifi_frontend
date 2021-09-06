@@ -89,7 +89,7 @@ export default function Team(props) {
            <Link href="" onClick={() => handleSubmit('/team_info')}>
               <Paper className={classes.paper} variant="outlined" square>
                 <Avatar className={classes.avatar}>
-                    <InfoIcon />
+                    <InfoIcon className={classes.icon}/>
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
@@ -103,7 +103,7 @@ export default function Team(props) {
             <Link href="" onClick={() => handleSubmit('/shop')}>
               <Paper className={classes.paper} variant="outlined" square>
                 <Avatar className={classes.avatar}>
-                    <ShoppingCartIcon />
+                    <ShoppingCartIcon className={classes.icon} />
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
@@ -127,7 +127,7 @@ export default function Team(props) {
             <Link href="" onClick={() => handleSubmit('/trade')}>
               <Paper className={classes.paper} variant="outlined" square>
                 <Avatar className={classes.avatar}>
-                    <CompareArrowsIcon />
+                    <CompareArrowsIcon className={classes.icon}/>
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
@@ -141,7 +141,7 @@ export default function Team(props) {
             <Link href="" onClick={() => handleSubmit('/offers')}>
               <Paper className={classes.paper} variant="outlined" square>
                 <Avatar className={classes.avatar}>
-                    <LocalOfferIcon />
+                    <LocalOfferIcon className={classes.icon}/>
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>

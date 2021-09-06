@@ -40,5 +40,32 @@ export const useStyles = makeStyles((theme) => ({
   image: {
     width: '10vh',
     height: '10vh',
-  }
+  },
+  table: {
+    minWidth: '50vh',
+  },
+  table_icon: {
+    width: '6vh',
+    height: '6vh',
+  },
+  input_icon: {
+    width: '5vh',
+    height: '5vh',
+    marginRight: theme.spacing(3),
+  },
+  form: {
+    width: '100vh', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
 }));

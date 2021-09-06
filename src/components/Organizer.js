@@ -85,10 +85,10 @@ export default function Organizer(props) {
           spacing={1}
         >
           <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-           <Link href="" onClick={() => handleSubmit('/team_info')}>
+           <Link href="" onClick={() => handleSubmit('/organizer_info')}>
               <Paper className={classes.paper} variant="outlined" square>
                 <Avatar className={classes.avatar}>
-                    <InfoIcon />
+                    <InfoIcon className={classes.icon}/>
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
@@ -99,10 +99,10 @@ export default function Organizer(props) {
             </Link>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-            <Link href="" onClick={() => handleSubmit('/shop')}>
+            <Link href="" onClick={() => handleSubmit('/setup')}>
               <Paper className={classes.paper} variant="outlined" square>
                 <Avatar className={classes.avatar}>
-                    <SettingsIcon />
+                    <SettingsIcon className={classes.icon}/>
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
@@ -123,10 +123,10 @@ export default function Organizer(props) {
           spacing={1}
         >
           <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-            <Link href="" onClick={() => handleSubmit('/trade')}>
+            <Link href="" onClick={() => handleSubmit('/add_xp')}>
               <Paper className={classes.paper} variant="outlined" square>
                 <Avatar className={classes.avatar}>
-                    <ExposureIcon />
+                    <ExposureIcon className={classes.icon}/>
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
@@ -137,10 +137,10 @@ export default function Organizer(props) {
             </Link>
           </Grid>
           <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-            <Link href="" onClick={() => handleSubmit('/offers')}>
+            <Link href="" onClick={() => handleSubmit('/add_point')}>
               <Paper className={classes.paper} variant="outlined" square>
                 <Avatar className={classes.avatar}>
-                    <ExposureIcon />
+                    <ExposureIcon className={classes.icon}/>
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>

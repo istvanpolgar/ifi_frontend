@@ -20,7 +20,7 @@ import OreCard from '../OreCard';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { useHistory } from 'react-router-dom';
-import { useStyles } from '../../styles/teamPagesStyle';
+import { useStyles } from '../../styles/teamAndOrganizerPagesStyle';
 
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 
@@ -34,6 +34,7 @@ export default function Trade(props) {
 
     const [xp, setXp] = useState(0);
     const [point, setPoint] = useState(0);
+    const [dailyPoint, setDailyPoint] = useState(0);
 
     const [iron, setIron] = useState();
     const [bronze, setBronze] = useState();
@@ -71,7 +72,6 @@ export default function Trade(props) {
         axios.post(process.env.REACT_APP_API_URL + '/get_teams', {}, {headers: headers})
             .then((response) => {
             if(!response.data.code){
-                console.log(response.data.teams);
                 setTeams(response.data.teams);
             }
             else
@@ -92,6 +92,7 @@ export default function Trade(props) {
             if(!response.data.code){
                 setXp(response.data.stats.xp);
                 setPoint(response.data.stats.point);
+                setDailyPoint(response.data.stats.daily_point);
                 setIron(response.data.stats.ores.iron);
                 setBronze(response.data.stats.ores.bronze);
                 setSilver(response.data.stats.ores.silver);
@@ -121,26 +122,100 @@ export default function Trade(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const data = {
-            
+        if(!team){
+            setOpen(true);
+            setText("Nem választottad ki, hogy melyik csapattal szeretnél cserélni!");
         }
-
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${props.token}`
-        }
-
-        axios.post(process.env.REACT_APP_API_URL + '/shop', data, {headers: headers})
-            .then((response) => {
-            if(!response.data.code){
-                
+        else
+            if( (!ironTrade1 && !bronzeTrade1 && !silverTrade1 && !goldTrade1 && !diamondTrade1 && !ifiraldTrade1) || 
+                (!ironTrade2 && !bronzeTrade2 && !silverTrade2 && !goldTrade2 && !diamondTrade2 && !ifiraldTrade2) ) {
+                setOpen(true);
+                setText("Üresen hagytad az ajánlott vagy a várt készletet!");
             }
             else
-            {
-                setOpen(true);
-                setText(response.data.message);
-            }
-        });
+                if(ironTrade1 > iron || bronzeTrade1 > bronze || silverTrade1 > silver || goldTrade1 > gold || diamondTrade1 > diamond || ifiraldTrade1 > ifirald) {
+                    setOpen(true);
+                    setText("Nincs elég érced a cseréhez!");
+                }
+                else
+                    if( ironTrade1 < 0 || bronzeTrade1 < 0 || silverTrade1 < 0 || goldTrade1 < 0 || diamondTrade1 < 0 || ifiraldTrade1 < 0 || 
+                        ironTrade2 < 0 || bronzeTrade2 < 0 || silverTrade2 < 0 || goldTrade2 < 0 || diamondTrade2 < 0 || ifiraldTrade2 < 0){
+                        setOpen(true);
+                        setText("Negatív értéket adtál meg!");
+                    }
+                    else{
+                        const data = {
+                            pushed_ores: {
+                                iron: ironTrade1,
+                                bronze: bronzeTrade1,
+                                silver: silverTrade1,
+                                gold: goldTrade1,
+                                diamond: diamondTrade1,
+                                ifirald: ifiraldTrade1
+                            },
+                            waited_ores: {
+                                iron: ironTrade2,
+                                bronze: bronzeTrade2,
+                                silver: silverTrade2,
+                                gold: goldTrade2,
+                                diamond: diamondTrade2,
+                                ifirald: ifiraldTrade2
+                            },
+                            team: team,
+                        }
+                
+                        const headers = {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${props.token}`
+                        }
+                
+                        axios.post(process.env.REACT_APP_API_URL + '/trade', data, {headers: headers})
+                            .then((response) => {
+                            if(!response.data.code){
+                                let pushed = "";
+                                if(ironTrade1 > 0) pushed += ironTrade1 + " - vas, ";
+                                if(bronzeTrade1 > 0) pushed += bronzeTrade1 + " - bronz, ";
+                                if(silverTrade1 > 0) pushed += silverTrade1 + " - ezüst, ";
+                                if(goldTrade1 > 0) pushed += goldTrade1 + " - arany, ";
+                                if(diamondTrade1 > 0) pushed += diamondTrade1 + " - gyémánt, ";
+                                if(ifiraldTrade1 > 0) pushed += ifiraldTrade1 + " - ifiráld, ";
+
+                                pushed = pushed.slice(0, -2)
+
+                                let waited = "";
+                                if(ironTrade2 > 0) waited += ironTrade2 + " - vas, ";
+                                if(bronzeTrade2 > 0) waited += bronzeTrade2 + " - bronz, ";
+                                if(silverTrade2 > 0) waited += silverTrade2 + " - ezüst, ";
+                                if(goldTrade2 > 0) waited += goldTrade2 + " - arany, ";
+                                if(diamondTrade2 > 0) waited += diamondTrade2 + " - gyémánt, ";
+                                if(ifiraldTrade2 > 0) waited += ifiraldTrade2 + " - ifiráld, ";
+
+                                waited = waited.slice(0, -2)
+
+                                setChange(!change);
+                                setOpen(true);
+                                setIronTrade1(0);
+                                setBronzeTrade1(0);
+                                setSilverTrade1(0);
+                                setGoldTrade1(0);
+                                setDiamondTrade1(0);
+                                setIfiraldTrade1(0);
+                                setIronTrade2(0);
+                                setBronzeTrade2(0);
+                                setSilverTrade2(0);
+                                setGoldTrade2(0);
+                                setDiamondTrade2(0);
+                                setIfiraldTrade2(0);
+                                setTeam("");
+                                setText(`Sikeresen ajálatot tettetek: ${pushed}. A(z) ${team} csapattól a következőket kértétek: ${waited}!`);
+                            }
+                            else
+                            {
+                                setOpen(true);
+                                setText(response.data.message);
+                            }
+                        });
+                    }
     }
 
     return (
@@ -181,6 +256,20 @@ export default function Trade(props) {
                                     </ThemeProvider>
                                 </Box>
                             </Box>
+                        </Box>
+                        <Box p={1} flexGrow={1}>
+                            <Box 
+                                display="flex"
+                                alignItems="flex-start"
+                            >
+                            <Box p={2}>
+                                <ThemeProvider theme={theme}>
+                                    <Typography variant="h5">
+                                        Maradék napi pont: {dailyPoint}
+                                    </Typography>
+                                </ThemeProvider>
+                            </Box>
+                        </Box>
                         </Box>
                         <Box p={1}>
                             <Box 
@@ -367,40 +456,34 @@ export default function Trade(props) {
                             </Box>
                         </Box>
                     </Box>
-                    <Box
-                        display="flex"
-                        flexWrap="wrap"
-                        justifyContent="center"
-                        p={1}
-                        m={1}
-                    >    
-                        <Box p={1}>
-                            <ThemeProvider theme={theme}>
-                                <Typography variant="h6" className={classes.text}>
-                                    Csapat
-                                </Typography>
-                            </ThemeProvider>
+                    <div className={classes.box}>
+                        <Box
+                            display="flex"
+                            flexWrap="wrap"
+                            justifyContent="center"
+                            p={1}
+                            m={1}
+                        >    
+                            <Box p={1}>
+                                <InputLabel htmlFor="team"> Akivel cseréltek </InputLabel>
+                                <Select 
+                                    native 
+                                    required
+                                    fullWidth
+                                    name="team"
+                                    value={team}
+                                    id="team"
+                                    onChange={e => setTeam(e.target.value)}
+                                >
+                                    <option aria-label="None" value="" />
+                                    { 
+                                        teams.map((t,i) => (
+                                            <option key={i} value={t}>{t}</option>
+                                    ))}
+                                </Select>
+                            </Box>
                         </Box>
-                        <Box p={1}>
-                            <InputLabel htmlFor="team"> Csapat </InputLabel>
-                            <Select 
-                                native 
-                                required
-                                fullWidth
-                                name="team"
-                                value={team}
-                                id="team"
-                                onChange={e => setTeam(e.target.value)}
-                            >
-                                <option aria-label="None" value="" />
-                                { 
-                                    teams.map((t,i) => (
-                                        <option key={i} value={t}>{t}</option>
-                                ))}
-                            </Select>
-                        </Box>
-                    </Box>
-                    
+                    </div>
                     <Box
                         display="flex"
                         flexWrap="wrap"

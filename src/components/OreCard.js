@@ -8,7 +8,7 @@ import {
   CardContent
 } from '@material-ui/core';
 
-import { useStyles } from '../styles/teamPagesStyle';
+import { useStyles } from '../styles/teamAndOrganizerPagesStyle';
 
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 
