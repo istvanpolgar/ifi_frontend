@@ -245,6 +245,8 @@ export default function OrganizerInfo(props) {
                             <Select 
                                 native 
                                 required
+                                fullWidth
+                                variant="outlined"
                                 name="team1"
                                 id="team1"
                                 onChange={ e => handleSelect(e.target.value)}
@@ -333,6 +335,8 @@ export default function OrganizerInfo(props) {
                             <Select 
                                 native 
                                 required
+                                fullWidth
+                                variant="outlined"
                                 name="team2"
                                 id="team2"
                                 onChange={ e => handleSelect2(e.target.value)}

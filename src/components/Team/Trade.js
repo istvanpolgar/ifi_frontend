@@ -476,6 +476,7 @@ export default function Trade(props) {
                                     native 
                                     required
                                     fullWidth
+                                    variant="outlined"
                                     name="team"
                                     value={team}
                                     id="team"
