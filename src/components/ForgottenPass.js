@@ -78,7 +78,7 @@ export default function Forgotten() {
                             color="primary"
                             className={classes.text}
                         >
-                            Ha elfelejtette jelszavát kérjük adja meg a bejelentkezési e-mailcímet,
+                            A jelszó megváltoztatásához kérjük adja meg a bejelentkezési e-mailcímet,
                             kattintson a gombra, majd várja a szükséges e-mailt a postaládájában. 
                             A levélben található linkre kattintva adhat meg új jelszavat!
                         </Typography>
@@ -109,7 +109,7 @@ export default function Forgotten() {
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
                                     <Link href="" onClick={handleChange} variant="body2">
-                                        Mégis emlékszel? Jelentkezz be!
+                                        Mégsem cseréled le? Jelentkezz be!
                                     </Link>
                                 </Grid>
                             </Grid>

@@ -258,6 +258,9 @@ export default function Shop(props) {
                     display="flex"
                     flexWrap="wrap"
                     justifyContent="center"
+                    border={1}
+                    borderRadius={10}
+                    borderColor="primary.main"
                     p={1}
                     m={1}
                 >
@@ -428,7 +431,7 @@ export default function Shop(props) {
                 </Box>
                 <ThemeProvider theme={theme}>
                     <Typography variant="h3" className={classes.text}>
-                        IFIbolt - Ércek vásárlása
+                        Vásárolj az IfiBolt érceiből 
                     </Typography>
                 </ThemeProvider>
                 <form className={classes.form} onSubmit={handleSubmit} noValidate>

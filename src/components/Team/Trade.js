@@ -354,7 +354,7 @@ export default function Trade(props) {
                 </Box>
                 <ThemeProvider theme={theme}>
                     <Typography variant="h3" className={classes.text}>
-                        Csere - Ércek cserére ajánlása
+                        Csere
                     </Typography>
                 </ThemeProvider>
                 <form className={classes.form} onSubmit={handleSubmit} noValidate>

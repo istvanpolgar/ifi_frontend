@@ -311,10 +311,10 @@ export default function TeamInfo(props) {
 
         <ThemeProvider theme={theme}>
             <Typography variant="h3" className={classes.text}>
-                Pontos feladatok árai
+                Kiváltható feladatok árai
             </Typography>
         </ThemeProvider>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={classes.container}>
             <Table className={classes.table} aria-label="customized table">
                 <TableHead>
                     <TableRow>
@@ -363,14 +363,20 @@ export default function TeamInfo(props) {
 
         <ThemeProvider theme={theme}>
             <Typography variant="h3" className={classes.text}>
-                A csapat ajánlatainak listája
+                Ajánlataitok listája
             </Typography>
         </ThemeProvider>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={classes.container}>
             <Table className={classes.table} aria-label="customized table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>Csapat</StyledTableCell>
+                        <StyledTableCell>
+                          <ThemeProvider theme={theme}>
+                              <Typography variant="h6">
+                                  Csapatok
+                              </Typography>
+                          </ThemeProvider>
+                        </StyledTableCell>
                         <StyledTableCell align="center">
                             <img src='./images/iron.png' alt='Vas' className={classes.table_icon}/>
                         </StyledTableCell>
@@ -389,7 +395,13 @@ export default function TeamInfo(props) {
                         <StyledTableCell align="center">
                             <img src='./images/ifirald.png' alt='Ifiráld' className={classes.table_icon}/>
                         </StyledTableCell>
-                        <StyledTableCell align="center"> Visszavonás </StyledTableCell>
+                        <StyledTableCell align="center"> 
+                          <ThemeProvider theme={theme}>
+                            <Typography variant="h6">
+                              Visszavonás
+                            </Typography>
+                          </ThemeProvider> 
+                        </StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

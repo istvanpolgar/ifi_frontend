@@ -165,7 +165,7 @@ export default function OrganizerInfo(props) {
                         Csapatok adatai
                     </Typography>
                 </ThemeProvider>
-                <TableContainer component={Paper}>
+                <TableContainer component={Paper} className={classes.container}>
                     <Table className={classes.table} aria-label="customized table">
                         <TableHead>
                             <TableRow>
@@ -260,7 +260,7 @@ export default function OrganizerInfo(props) {
                         </Box>
                     </Box>
                 </div>
-                <TableContainer component={Paper}>
+                <TableContainer component={Paper} className={classes.container}>
                     <Table className={classes.table} aria-label="customized table">
                         <TableHead>
                             <TableRow>
@@ -350,21 +350,32 @@ export default function OrganizerInfo(props) {
                         </Box>
                     </Box>
                 </div>
-                <Box
-                    display="flex"
-                    flexWrap="wrap"
-                    justifyContent="center"
-                    p={1}
-                    m={1}
-                >
-                    <Box p={1}>
-                    {
-                        missionTimes.map((mission,i) => (
-                            <div key={i}>{new Date(mission).toLocaleString()}</div>
-                        ))
-                    }
-                    </Box>
-                </Box>
+                <TableContainer component={Paper} className={classes.container}>
+                    <Table className={classes.table} aria-label="customized table">
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell>
+                                    <ThemeProvider theme={theme}>
+                                        <Typography variant="h6">
+                                            Sátoros XP időpontok
+                                        </Typography>
+                                    </ThemeProvider>
+                                </StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                        {
+                            missionTimes.map((mission,i) => (
+                                <StyledTableRow key={i}>
+                                    <StyledTableCell component="th" scope="row">
+                                        {new Date(mission).toLocaleString()}
+                                    </StyledTableCell>
+                                </StyledTableRow>
+                            ))
+                        }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </div>
         </div>
     );

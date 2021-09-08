@@ -19,6 +19,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   info: {
     paddingTop: '10vh',
+    paddingBottom: '5vh',
   },
   card: {
     padding: theme.spacing(1),
@@ -41,8 +42,12 @@ export const useStyles = makeStyles((theme) => ({
     width: '10vh',
     height: '10vh',
   },
+  container: {
+    width: '95%',
+    margin: 'auto',
+  },
   table: {
-    minWidth: '50vh',
+    width: '100%',
   },
   table_icon: {
     width: '6vh',

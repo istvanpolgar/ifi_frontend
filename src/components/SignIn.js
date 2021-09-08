@@ -39,9 +39,9 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleChange = () => {
+  /*const handleChange = () => {
     history.push('/signup');
-  }
+  }*/
 
   const handleChange2 = () => {
     history.push('/forgotten_pass');
@@ -128,14 +128,14 @@ export default function SignIn(props) {
                 <Grid container>
                   <Grid item xs>
                     <Link href="" onClick={handleChange2} variant="body2">
-                      Elfelejtetted a jelszavad?
+                      Jelszó megváltoztatása
                     </Link>
                   </Grid>
-                  <Grid item>
+                  {/*<Grid item>
                     <Link href="" onClick={handleChange} variant="body2">
                       Nem tudsz bejelentkezni? Regisztrálj!
                     </Link>
-                  </Grid>
+                  </Grid>*/}
                 </Grid>
                 <Box mt={5}>
                   <Copyright />

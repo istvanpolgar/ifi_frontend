@@ -390,11 +390,17 @@ export default function AddPoint(props) {
                 Pontos feladatok árai
             </Typography>
         </ThemeProvider>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={classes.container}>
             <Table className={classes.table} aria-label="customized table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell> Pont </StyledTableCell>
+                        <StyledTableCell> 
+                          <ThemeProvider theme={theme}>
+                            <Typography variant="h6">
+                              Pontok
+                            </Typography>
+                          </ThemeProvider>
+                        </StyledTableCell>
                         <StyledTableCell align="center">
                             <img src='./images/iron.png' alt='Vas' className={classes.table_icon}/>
                         </StyledTableCell>
