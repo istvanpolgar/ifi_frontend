@@ -14,6 +14,9 @@ export const useStyles = makeStyles((theme) => ({
     height: '100vh',
     width: '100vw',
   },
+  anchor: {
+    margin: theme.spacing(2),
+  },
   appbar: {
     padding: theme.spacing(0),
     margin: theme.spacing(0),
