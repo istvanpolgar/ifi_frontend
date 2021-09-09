@@ -27,6 +27,9 @@ import { withStyles } from '@material-ui/core/styles';
 import PopupAlert from '../PopupAlert';
 import OreCard from '../OreCard';
 
+import Utmutato from '../../pdfs/Utmutato.pdf';
+import Ghid from '../../pdfs/Ghid.pdf';
+
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 
 let theme = createTheme();
@@ -177,6 +180,14 @@ export default function TeamInfo(props) {
       </AppBar>
       <div className={classes.info}>
         <div className={classes.box}>
+          <Box display="flex" >
+            <Box flexGrow={1} p={1}>
+              <a href = {Utmutato} target = "_blank" rel="noreferrer" className={classes.anchor}>Használati útmutató letöltése</a>
+            </Box>
+            <Box p={1}>
+              <a href = {Ghid} target = "_blank" rel="noreferrer" className={classes.anchor}>Descarcă ghid pentru utilizatori</a>
+            </Box>
+          </Box>
           <Box display="flex" >
             <Box flexGrow={1} p={1}>
               <Box 

@@ -21,9 +21,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useHistory } from 'react-router-dom';
 import { useStyles } from '../styles/teamAndOrganizerStyle';
 
-import Utmutato from '../pdfs/Utmutato.pdf';
-import Ghid from '../pdfs/Ghid.pdf';
-
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 
 let theme = createTheme();
@@ -69,8 +66,6 @@ export default function Team(props) {
                 Kijelentkezés
             </Typography>
           </ThemeProvider>
-          <a href = {Utmutato} target = "_blank" rel="noreferrer" className={classes.anchor}>Használati útmutató letöltése</a>
-          <a href = {Ghid} target = "_blank" rel="noreferrer" className={classes.anchor}>Descarcă ghid pentru utilizatori</a>
         </Toolbar>
       </AppBar>
       <Grid 
