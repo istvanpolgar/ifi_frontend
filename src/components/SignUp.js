@@ -27,6 +27,7 @@ export default function SignUp(props) {
     const history = useHistory();
 
     const [team, setTeam] = useState();
+    const [name, setName] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [password2, setPassword2] = useState();
@@ -49,6 +50,7 @@ export default function SignUp(props) {
 
         const data = {
             team: team,
+            name: name,
             email: email,
             password: password,
             password2: password2
@@ -89,6 +91,18 @@ export default function SignUp(props) {
                                     id="team"
                                     label="Csapat neve"
                                     onChange={e => setTeam(e.target.value)}
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="name"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="name"
+                                    label="Csapatkapitány neve"
+                                    onChange={e => setName(e.target.value)}
                                     autoFocus
                                 />
                             </Grid>

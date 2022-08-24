@@ -9,7 +9,7 @@ import {
 
 import useToken from './functions/useToken';
 import SignIn from './components/SignIn';
-//import SignUp from './components/SignUp';
+import SignUp from './components/SignUp';
 import ForgottenPass from './components/ForgottenPass';
 
 import Team from './components/Team';
@@ -60,9 +60,9 @@ function App() {
                 handleClickOpen={handleClickOpen}
               />
             </Route>
-            {/*<Route path="/signup">
+            {<Route path="/signup">
                 <SignUp setOpen={setOpen}/>
-            </Route>*/}
+            </Route>}
             <Route path="/forgotten_pass">
                 <ForgottenPass />
             </Route>
