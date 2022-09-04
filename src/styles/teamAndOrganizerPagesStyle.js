@@ -11,11 +11,12 @@ export const useStyles = makeStyles((theme) => ({
   appbar: {
     padding: theme.spacing(0),
     margin: theme.spacing(0),
-    height: '8vh',
+    height: '10vh',
     width: '100%',
   },
   text: {
     margin: theme.spacing(3),
+    textAlign: 'center'
   },
   info: {
     paddingTop: '10vh',
@@ -24,6 +25,11 @@ export const useStyles = makeStyles((theme) => ({
   card: {
     padding: theme.spacing(1),
     width: '15vh',
+  },
+  card_content: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   card_media: {
     width: '15vh',
@@ -39,8 +45,8 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   image: {
-    width: '10vh',
-    height: '10vh',
+    width: '20vh',
+    height: '20vh',
   },
   container: {
     width: '95%',
@@ -77,4 +83,7 @@ export const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
+  input: {
+    width: '20vh'
+  }
 }));

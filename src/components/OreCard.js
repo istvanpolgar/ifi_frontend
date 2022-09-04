@@ -27,14 +27,14 @@ export default function OreCard(props) {
                     image={props.src}
                     title={props.title}
                 />
-                <CardContent>
+                <CardContent className={classes.card_content}>
                     <ThemeProvider theme={theme}>
-                        <Typography variant="h6">
+                        <Typography variant="h6" align='center'>
                             {props.title}
                         </Typography>
                     </ThemeProvider>
                     <ThemeProvider theme={theme}>
-                        <Typography variant="subtitle2">
+                        <Typography variant="subtitle2" align='center'>
                             {props.ore} {props.scale}
                         </Typography>
                     </ThemeProvider>

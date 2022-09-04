@@ -57,20 +57,38 @@ export default function Trade(props) {
     const [text, setText] = useState();
 
     const [xp, setXp] = useState(0);
-    const [point, setPoint] = useState(0);
-    const [dailyPoint, setDailyPoint] = useState(0);
+    const [ifipoint, setIfipoint] = useState(0);
+    const [shupp, setShupp] = useState(0);
+    const [omlas, setOmlas] = useState(0);
+    const [porkolt, setPorkolt] = useState(0);
+    const [kaloz, setKaloz] = useState(0);
+    const [malna, setMalna] = useState(0);
+    const [part, setPart] = useState("");
 
-    const [iron, setIron] = useState();
-    const [bronze, setBronze] = useState();
-    const [silver, setSilver] = useState();
-    const [gold, setGold] = useState();
-    const [diamond, setDiamond] = useState();
-    const [ifirald, setIfirald] = useState();
+    const [price, setPrice] = useState(0);
 
     const [trades, setTrades] = useState([]);
 
     const history = useHistory();
     const classes = useStyles();
+    let partName = "";
+
+    useEffect(() => {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${props.token}`
+        }
+
+        axios.post(process.env.REACT_APP_API_URL + '/part_price', {}, {headers: headers})
+            .then((response) => {
+            if(!response.data.code)
+                setPrice(response.data.price);
+            else
+            {
+                console.log(response.data.message);
+            }
+        });
+    },[props.token])
 
     useEffect(() => {
         const headers = {
@@ -100,21 +118,20 @@ export default function Trade(props) {
             .then((response) => {
             if(!response.data.code){
                 setXp(response.data.stats.xp);
-                setPoint(response.data.stats.point);
-                setDailyPoint(response.data.stats.daily_point);
-                setIron(response.data.stats.ores.iron);
-                setBronze(response.data.stats.ores.bronze);
-                setSilver(response.data.stats.ores.silver);
-                setGold(response.data.stats.ores.gold);
-                setDiamond(response.data.stats.ores.diamond);
-                setIfirald(response.data.stats.ores.ifirald);
+                setIfipoint(response.data.stats.ifipoint);
+                setShupp(response.data.stats.parts.shupp);
+                setOmlas(response.data.stats.parts.omlas);
+                setPorkolt(response.data.stats.parts.porkolt);
+                setKaloz(response.data.stats.parts.kaloz);
+                setMalna(response.data.stats.parts.malna);
+                setPart(response.data.stats.part);
             }
             else
             {
                 console.log(response.data.message);
         }
         });
-    },[props.token,change])
+    },[props.token,change,shupp,omlas,porkolt,kaloz,malna])
 
     const handleBack = () => {
         history.push('/team');
@@ -129,14 +146,23 @@ export default function Trade(props) {
     };
 
     const handleAccept = (trade) => {
-        if( trade.trade.waited_ores.iron > iron || trade.trade.waited_ores.bronze > bronze || trade.trade.waited_ores.silver > silver ||
-            trade.trade.waited_ores.gold > gold || trade.trade.waited_ores.diamond > diamond || trade.trade.waited_ores.ifirald > ifirald)
+        let part_nr;
+        switch(part) {
+            case "shupp": part_nr = shupp; break;
+            case "omlas": part_nr = omlas; break;
+            case "porkolt": part_nr = porkolt; break;
+            case "kaloz": part_nr = kaloz; break;
+            case "malna": part_nr = malna; break;
+            default: part_nr = 0;
+        }
+        if( trade.trade.nr > part_nr)
         {
             setOpen(true);
-            setText("Nem tudod elfogadni az ajánlatot, mert nincs elég érced!");
+            setText("You can't accept the offer because you don't have enough pieces!");
         }
         else {
             const data = {
+                part: part,
                 trade: trade
             }
 
@@ -148,18 +174,9 @@ export default function Trade(props) {
             axios.post(process.env.REACT_APP_API_URL + '/accept_trade', data, {headers: headers})
                 .then((response) => {
                 if(!response.data.code){
-                    let waited = "";
-                    if(response.data.waited_ores.iron > 0) waited += response.data.waited_ores.iron + " - vas, ";
-                    if(response.data.waited_ores.bronze > 0) waited += response.data.waited_ores.bronze + " - bronz, ";
-                    if(response.data.waited_ores.silver > 0) waited += response.data.waited_ores.silver + " - ezüst, ";
-                    if(response.data.waited_ores.gold > 0) waited += response.data.waited_ores.gold + " - arany, ";
-                    if(response.data.waited_ores.diamond > 0) waited += response.data.waited_ores.diamond + " - gyémánt, ";
-                    if(response.data.waited_ores.ifirald > 0) waited += response.data.waited_ores.ifirald + " - ifiráld, ";
-
-                    waited = waited.slice(0, -2)
                     setChange(!change);
                     setOpen(true);
-                    setText(`Elfogadtátok ${response.data.team} ajánlatát! A következő érceket szereztétek meg: ${waited}`);
+                    setText(`You have accepted ${response.data.team}'s offer! You have earned ${response.data.nr} ${response.data.part} pieces!`);
                 }
                 else
                 {
@@ -171,7 +188,6 @@ export default function Trade(props) {
     };
 
     const handleRefuze = (trade) => {
-        console.log(trade);
         const data = {
             trade: trade
         }
@@ -186,7 +202,7 @@ export default function Trade(props) {
             if(!response.data.code){
                 setChange(!change);
                 setOpen(true);
-                setText(`Elutasítottátok ${response.data.team} ajánlatát!`);
+                setText(`You have rejected ${response.data.team}'s offer!`);
             }
             else
             {
@@ -195,6 +211,15 @@ export default function Trade(props) {
             }
         });
     };
+
+    switch(part) {
+        case 'shupp': partName = "Shupp"; break;
+        case 'omlas': partName = "Omlás"; break;
+        case 'porkolt': partName = "Pörkölt"; break;
+        case 'kaloz': partName = "Kalóz"; break;
+        case 'malna': partName = "Málna"; break;
+        default: partName = "Unknow";
+    }
 
     return (
         <div className={classes.root}>
@@ -210,71 +235,44 @@ export default function Trade(props) {
                 </IconButton>
                 <ThemeProvider theme={theme}>
                     <Typography variant="h5" className={classes.text}>
-                        Visszalépés
+                        Back
                     </Typography>
                 </ThemeProvider>
                 </Toolbar>
             </AppBar>
             <div className={classes.info}>
-                <div className={classes.box}>
-                    <Box display="flex" >
-                        <Box flexGrow={1} p={1}>
-                        <Box 
-                            display="flex"
-                            alignItems="flex-start"
-                        >
-                            <Box p={1}>
-                            <img alt="XPs" src="/images/xp.png" className={classes.bar}/>
-                            </Box>
-                            <Box p={2}>
-                                <ThemeProvider theme={theme}>
-                                    <Typography variant="h5">
-                                        {xp}
-                                    </Typography>
-                                </ThemeProvider>
-                            </Box>
-                        </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box 
-                                display="flex"
-                                alignItems="flex-start"
-                            >
-                                <Box p={1}>
-                                    <img alt="Poitns" src="/images/point.png" className={classes.bar}/>
-                                </Box>
-                                <Box p={2}>
-                                    <ThemeProvider theme={theme}>
-                                        <Typography variant="h5">
-                                            {point}
-                                        </Typography>
-                                    </ThemeProvider>
-                                </Box>
-                            </Box>
-                        </Box>
+            <Box
+                    display="flex"
+                    flexWrap="wrap"
+                    justifyContent="center"
+                    p={1}
+                    m={1}
+                >
+                    <Box p={1}>
+                        <OreCard 
+                        src='./images/xp.png'
+                        title='XP'
+                        ore={xp}
+                        scale='XP'
+                        />
                     </Box>
-                    </div>
-                    <div className={classes.box}>
-                    <Box display="flex" justifyContent="center">
-                        <Box p={1}>
-                            <Box 
-                                display="flex"
-                                alignItems="center"
-                            >
-                                <Box p={1}>
-                                    <img alt="Napi pont" src="/images/dailypoint.png" className={classes.bar}/>
-                                </Box>
-                                <Box p={2}>
-                                    <ThemeProvider theme={theme}>
-                                        <Typography variant="h5">
-                                            {dailyPoint}
-                                        </Typography>
-                                    </ThemeProvider>
-                                </Box>
-                            </Box>
-                        </Box>
+                    <Box p={1}>
+                        <OreCard 
+                        src='./images/ifilogo.png'
+                        title='Ifipoint'
+                        ore={ifipoint}
+                        scale='point'
+                        />
                     </Box>
-                </div>
+                    <Box p={1}>
+                        <OreCard 
+                            src={`./images/${part}.png`}
+                            title={`${partName}`}
+                            ore={price}
+                            scale='XP'
+                        />
+                    </Box>
+                </Box>
                 <Box
                     display="flex"
                     flexWrap="wrap"
@@ -284,56 +282,48 @@ export default function Trade(props) {
                 >
                     <Box p={1}>
                         <OreCard 
-                        src='./images/iron.png'
-                        title='Vas'
-                        ore={iron}
-                        scale='darab'
+                            src='./images/shupp.png'
+                            title='Shupp'
+                            ore={shupp}
+                            scale='piece'
                         />
                     </Box>
                     <Box p={1}>
                         <OreCard 
-                        src='./images/bronze.png'
-                        title='Bronz'
-                        ore={bronze}
-                        scale='darab'
+                            src='./images/omlas.png'
+                            title='Omlás'
+                            ore={omlas}
+                            scale='piece'
                         />
                     </Box>
                     <Box p={1}>
                         <OreCard 
-                        src='./images/silver.png'
-                        title='Ezüst'
-                        ore={silver}
-                        scale='darab'
+                            src='./images/porkolt.png'
+                            title='Pörkölt'
+                            ore={porkolt}
+                            scale='piece'
                         />
                     </Box>
                     <Box p={1}>
                         <OreCard 
-                        src='./images/gold.png'
-                        title='Arany'
-                        ore={gold}
-                        scale='darab'
+                            src='./images/kaloz.png'
+                            title='Kalóz'
+                            ore={kaloz}
+                            scale='piece'
                         />
                     </Box>
                     <Box p={1}>
                         <OreCard 
-                        src='./images/diamond.png'
-                        title='Gyémánt'
-                        ore={diamond}
-                        scale='darab'
-                        />
-                    </Box>
-                    <Box p={1}>
-                        <OreCard 
-                        src='./images/ifirald.png'
-                        title='Ifiráld'
-                        ore={ifirald}
-                        scale='darab'
+                            src='./images/malna.png'
+                            title='Málna'
+                            ore={malna}
+                            scale='piece'
                         />
                     </Box>
                 </Box>
                 <ThemeProvider theme={theme}>
                     <Typography variant="h3" className={classes.text}>
-                        Ajánlatok a csapatnak
+                        Offers for the team
                     </Typography>
                 </ThemeProvider>
                 <TableContainer component={Paper} className={classes.container}>
@@ -343,39 +333,30 @@ export default function Trade(props) {
                                 <StyledTableCell>
                                     <ThemeProvider theme={theme}>
                                         <Typography variant="h6">
-                                            Csapatok
+                                            Teams
                                         </Typography>
                                     </ThemeProvider>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/iron.png' alt='Vas' className={classes.table_icon}/>
+                                    <img src='./images/give.png' alt='Give' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/bronze.png' alt='Bronz' className={classes.table_icon}/>
+                                    <img src='./images/get.png' alt='Get' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/silver.png' alt='Ezüst' className={classes.table_icon}/>
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <img src='./images/gold.png' alt='Arany' className={classes.table_icon}/>
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <img src='./images/diamond.png' alt='Gyémánt' className={classes.table_icon}/>
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <img src='./images/ifirald.png' alt='Ifiráld' className={classes.table_icon}/>
+                                    <img src='./images/nr.png' alt='Number' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
                                     <ThemeProvider theme={theme}>
                                         <Typography variant="h6">
-                                            Elfogad
+                                            Accept
                                         </Typography>
                                     </ThemeProvider>
                                 </StyledTableCell>
                                 <StyledTableCell align="center"> 
                                     <ThemeProvider theme={theme}>
                                         <Typography variant="h6">
-                                            Elutasít
+                                            Refuze
                                         </Typography>
                                     </ThemeProvider> 
                                 </StyledTableCell>
@@ -387,15 +368,16 @@ export default function Trade(props) {
                                 <>
                                     <StyledTableRow key={i+1}>
                                         <StyledTableCell component="th" scope="row">
-                                            {trade.team} ajánlata
+                                            {trade.team}'s offer'
                                         </StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.pushed_ores.iron}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.pushed_ores.bronze}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.pushed_ores.silver}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.pushed_ores.gold}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.pushed_ores.diamond}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.pushed_ores.ifirald}</StyledTableCell>
-                                        <StyledTableCell rowSpan={2} align="center">
+                                        <StyledTableCell align="center">
+                                            <img src={'./images/what.png'} alt='Give' className={classes.table_icon}/>
+                                        </StyledTableCell>
+                                        <StyledTableCell align="center">
+                                            <img src={`./images/${trade.trade.get}.png`} alt='Get' className={classes.table_icon}/>
+                                        </StyledTableCell>
+                                        <StyledTableCell align="center">{trade.trade.nr}</StyledTableCell>
+                                        <StyledTableCell align="center">
                                             <Fab
                                                 component="button"
                                                 className={classes.submit}
@@ -405,7 +387,7 @@ export default function Trade(props) {
                                                 <CheckIcon /> 
                                             </Fab>
                                         </StyledTableCell>
-                                        <StyledTableCell rowSpan={2} align="center">
+                                        <StyledTableCell align="center">
                                             <Fab
                                                 component="button"
                                                 className={classes.submit}
@@ -415,17 +397,6 @@ export default function Trade(props) {
                                                 <CloseIcon /> 
                                             </Fab>
                                         </StyledTableCell>
-                                    </StyledTableRow>
-                                    <StyledTableRow key={(i+1)*10+i}>
-                                        <StyledTableCell component="th" scope="row">
-                                            {trade.team} kérése
-                                        </StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.waited_ores.iron}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.waited_ores.bronze}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.waited_ores.silver}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.waited_ores.gold}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.waited_ores.diamond}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.trade.waited_ores.ifirald}</StyledTableCell>
                                     </StyledTableRow>
                                 </>
                             ))

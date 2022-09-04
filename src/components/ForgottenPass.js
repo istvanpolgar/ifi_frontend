@@ -71,16 +71,16 @@ export default function Forgotten() {
                             component="h1" 
                             variant="h5"
                         >
-                            Jelszó újrakérése
+                            Change password
                         </Typography>
                         <Typography 
                             component="p" 
                             color="primary"
                             className={classes.text}
                         >
-                            A jelszó megváltoztatásához kérjük adja meg a bejelentkezési e-mailcímet,
-                            kattintson a gombra, majd várja a szükséges e-mailt a postaládájában. 
-                            A levélben található linkre kattintva adhat meg új jelszavat!
+                            To change the password, please enter the login e-mail address, click the button, 
+                            and then wait for the necessary e-mail in your mailbox. You can enter a new password 
+                            by clicking on the link in the letter!
                         </Typography>
                         <form onSubmit={handleSubmit} className={classes.form}>
                             <TextField
@@ -89,7 +89,7 @@ export default function Forgotten() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="E-mail address"
                                 name="email"
                                 onChange={e => setEmail(e.target.value)}
                                 autoFocus
@@ -104,12 +104,12 @@ export default function Forgotten() {
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Új jelszó kérése
+                                Request a new password
                             </Button>
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
                                     <Link href="" onClick={handleChange} variant="body2">
-                                        Mégsem cseréled le? Jelentkezz be!
+                                        Won't you replace it? SIGN IN!
                                     </Link>
                                 </Grid>
                             </Grid>

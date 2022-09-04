@@ -177,28 +177,28 @@ export default function OrganizerInfo(props) {
                                     <img src='./images/point.png' alt='Pointok' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/dailypoint.png' alt='Napi pont' className={classes.table_icon}/>
+                                    <img src='./images/max.png' alt='Napi pont' className={classes.table_icon}/>
+                                </StyledTableCell>
+                                <StyledTableCell align="center">
+                                    <img src='./images/ifilogo.png' alt='Ifi pont' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
                                     <img src='./images/trade.png' alt='Cserék száma' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/iron.png' alt='Vas' className={classes.table_icon}/>
+                                    <img src='./images/shupp.png' alt='Shupp' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/bronze.png' alt='Bronz' className={classes.table_icon}/>
+                                    <img src='./images/omlas.png' alt='Omlás' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/silver.png' alt='Ezüst' className={classes.table_icon}/>
+                                    <img src='./images/porkolt.png' alt='Pörkölt' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/gold.png' alt='Arany' className={classes.table_icon}/>
+                                    <img src='./images/kaloz.png' alt='Kalóz' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/diamond.png' alt='Gyémánt' className={classes.table_icon}/>
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <img src='./images/ifirald.png' alt='Ifiráld' className={classes.table_icon}/>
+                                    <img src='./images/malna.png' alt='Málna' className={classes.table_icon}/>
                                 </StyledTableCell>
                             </TableRow>
                         </TableHead>
@@ -213,13 +213,13 @@ export default function OrganizerInfo(props) {
                                         <StyledTableCell align="center">{team.xp}</StyledTableCell>
                                         <StyledTableCell align="center">{team.point}</StyledTableCell>
                                         <StyledTableCell align="center">{team.daily_point}</StyledTableCell>
+                                        <StyledTableCell align="center">{team.ifipoint}</StyledTableCell>
                                         <StyledTableCell align="center">{team.trades}</StyledTableCell>
-                                        <StyledTableCell align="center">{team.ores.iron}</StyledTableCell>
-                                        <StyledTableCell align="center">{team.ores.bronze}</StyledTableCell>
-                                        <StyledTableCell align="center">{team.ores.silver}</StyledTableCell>
-                                        <StyledTableCell align="center">{team.ores.gold}</StyledTableCell>
-                                        <StyledTableCell align="center">{team.ores.diamond}</StyledTableCell>
-                                        <StyledTableCell align="center">{team.ores.ifirald}</StyledTableCell>
+                                        <StyledTableCell align="center">{team.parts.shupp}</StyledTableCell>
+                                        <StyledTableCell align="center">{team.parts.omlas}</StyledTableCell>
+                                        <StyledTableCell align="center">{team.parts.porkolt}</StyledTableCell>
+                                        <StyledTableCell align="center">{team.parts.kaloz}</StyledTableCell>
+                                        <StyledTableCell align="center">{team.parts.malna}</StyledTableCell>
                                     </StyledTableRow>
                                 </>
                             ))
@@ -266,22 +266,13 @@ export default function OrganizerInfo(props) {
                             <TableRow>
                                 <StyledTableCell>Csapat</StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/iron.png' alt='Vas' className={classes.table_icon}/>
+                                    <img src='./images/give.png' alt='Adás' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/bronze.png' alt='Bronz' className={classes.table_icon}/>
+                                    <img src='./images/get.png' alt='Kapás' className={classes.table_icon}/>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <img src='./images/silver.png' alt='Ezüst' className={classes.table_icon}/>
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <img src='./images/gold.png' alt='Arany' className={classes.table_icon}/>
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <img src='./images/diamond.png' alt='Gyémánt' className={classes.table_icon}/>
-                                </StyledTableCell>
-                                <StyledTableCell align="center">
-                                    <img src='./images/ifirald.png' alt='Ifiráld' className={classes.table_icon}/>
+                                    <img src='./images/nr.png' alt='Szám' className={classes.table_icon}/>
                                 </StyledTableCell>
                             </TableRow>
                         </TableHead>
@@ -291,25 +282,15 @@ export default function OrganizerInfo(props) {
                                 <>
                                     <StyledTableRow key={i+1}>
                                         <StyledTableCell component="th" scope="row">
-                                            Ajánlat a(z) {trade.team} csapatnak
+                                            {trade.team}
                                         </StyledTableCell>
-                                        <StyledTableCell align="center">{trade.pushed_ores.iron}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.pushed_ores.bronze}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.pushed_ores.silver}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.pushed_ores.gold}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.pushed_ores.diamond}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.pushed_ores.ifirald}</StyledTableCell>
-                                    </StyledTableRow>
-                                    <StyledTableRow key={(i+1)*10+i}>
-                                        <StyledTableCell component="th" scope="row">
-                                            Kérés a(z) {trade.team} csapattól
+                                        <StyledTableCell align="center">
+                                            <img src={`./images/${trade.give}.png`} alt='Adás' className={classes.table_icon}/>
                                         </StyledTableCell>
-                                        <StyledTableCell align="center">{trade.waited_ores.iron}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.waited_ores.bronze}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.waited_ores.silver}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.waited_ores.gold}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.waited_ores.diamond}</StyledTableCell>
-                                        <StyledTableCell align="center">{trade.waited_ores.ifirald}</StyledTableCell>
+                                        <StyledTableCell align="center">
+                                            <img src={`./images/${trade.get}.png`} alt='Kapás' className={classes.table_icon}/>
+                                        </StyledTableCell>
+                                        <StyledTableCell align="center">{trade.nr}</StyledTableCell>
                                     </StyledTableRow>
                                 </>
                             ))

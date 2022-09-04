@@ -32,35 +32,40 @@ export default function Trade(props) {
     const [text, setText] = useState();
 
     const [xp, setXp] = useState(0);
-    const [point, setPoint] = useState(0);
-    const [dailyPoint, setDailyPoint] = useState(0);
+    const [ifipoint, setIfipoint] = useState(0);
+    const [shupp, setShupp] = useState(0);
+    const [omlas, setOmlas] = useState(0);
+    const [porkolt, setPorkolt] = useState(0);
+    const [kaloz, setKaloz] = useState(0);
+    const [malna, setMalna] = useState(0);
+    const [part, setPart] = useState("");
+    const [nr, setNr] = useState(0);
 
-    const [iron, setIron] = useState();
-    const [bronze, setBronze] = useState();
-    const [silver, setSilver] = useState();
-    const [gold, setGold] = useState();
-    const [diamond, setDiamond] = useState();
-    const [ifirald, setIfirald] = useState();
-
-    const [ironTrade1, setIronTrade1] = useState(0);
-    const [bronzeTrade1, setBronzeTrade1] = useState(0);
-    const [silverTrade1, setSilverTrade1] = useState(0);
-    const [goldTrade1, setGoldTrade1] = useState(0);
-    const [diamondTrade1, setDiamondTrade1] = useState(0);
-    const [ifiraldTrade1, setIfiraldTrade1] = useState(0);
-
-    const [ironTrade2, setIronTrade2] = useState(0);
-    const [bronzeTrade2, setBronzeTrade2] = useState(0);
-    const [silverTrade2, setSilverTrade2] = useState(0);
-    const [goldTrade2, setGoldTrade2] = useState(0);
-    const [diamondTrade2, setDiamondTrade2] = useState(0);
-    const [ifiraldTrade2, setIfiraldTrade2] = useState(0);
+    const [price, setPrice] = useState(0);
 
     const [team, setTeam] = useState();
     const [teams, setTeams] = useState([]);
 
     const history = useHistory();
     const classes = useStyles();
+    let partName = "";
+
+    useEffect(() => {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${props.token}`
+        }
+
+        axios.post(process.env.REACT_APP_API_URL + '/part_price', {}, {headers: headers})
+            .then((response) => {
+            if(!response.data.code)
+                setPrice(response.data.price);
+            else
+            {
+                console.log(response.data.message);
+            }
+        });
+    },[props.token])
 
     useEffect(() => {
         const headers = {
@@ -90,21 +95,20 @@ export default function Trade(props) {
             .then((response) => {
             if(!response.data.code){
                 setXp(response.data.stats.xp);
-                setPoint(response.data.stats.point);
-                setDailyPoint(response.data.stats.daily_point);
-                setIron(response.data.stats.ores.iron);
-                setBronze(response.data.stats.ores.bronze);
-                setSilver(response.data.stats.ores.silver);
-                setGold(response.data.stats.ores.gold);
-                setDiamond(response.data.stats.ores.diamond);
-                setIfirald(response.data.stats.ores.ifirald);
+                setIfipoint(response.data.stats.ifipoint);
+                setShupp(response.data.stats.parts.shupp);
+                setOmlas(response.data.stats.parts.omlas);
+                setPorkolt(response.data.stats.parts.porkolt);
+                setKaloz(response.data.stats.parts.kaloz);
+                setMalna(response.data.stats.parts.malna);
+                setPart(response.data.stats.part);
             }
             else
             {
                 console.log(response.data.message);
         }
         });
-    },[props.token,change])
+    },[props.token,change,shupp,omlas,porkolt,kaloz,malna])
 
     const handleBack = () => {
         history.push('/team');
@@ -121,45 +125,39 @@ export default function Trade(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        let part_nr;
+        switch(part) {
+            case "shupp": part_nr = shupp; break;
+            case "omlas": part_nr = omlas; break;
+            case "porkolt": part_nr = porkolt; break;
+            case "kaloz": part_nr = kaloz; break;
+            case "malna": part_nr = malna; break;
+            default: part_nr = 0;
+        }
+
         if(!team){
             setOpen(true);
-            setText("Nem választottad ki, hogy melyik csapattal szeretnél cserélni!");
+            setText("You have not selected which team you want to exchange with!");
         }
         else
-            if( (!ironTrade1 && !bronzeTrade1 && !silverTrade1 && !goldTrade1 && !diamondTrade1 && !ifiraldTrade1) || 
-                (!ironTrade2 && !bronzeTrade2 && !silverTrade2 && !goldTrade2 && !diamondTrade2 && !ifiraldTrade2) ) {
+            if(!nr) {
                 setOpen(true);
-                setText("Üresen hagytad az ajánlott vagy a várt készletet!");
+                setText("The piece number is not specified or is empty!");
             }
             else
-                if(ironTrade1 > iron || bronzeTrade1 > bronze || silverTrade1 > silver || goldTrade1 > gold || diamondTrade1 > diamond || ifiraldTrade1 > ifirald) {
+                if(part_nr < nr) {
                     setOpen(true);
-                    setText("Nincs elég érced a cseréhez!");
+                    setText(`You don't have enough ${part} pieces to exchange!`);
                 }
                 else
-                    if( ironTrade1 < 0 || bronzeTrade1 < 0 || silverTrade1 < 0 || goldTrade1 < 0 || diamondTrade1 < 0 || ifiraldTrade1 < 0 || 
-                        ironTrade2 < 0 || bronzeTrade2 < 0 || silverTrade2 < 0 || goldTrade2 < 0 || diamondTrade2 < 0 || ifiraldTrade2 < 0){
+                    if( nr <= 0 ){
                         setOpen(true);
-                        setText("Negatív értéket adtál meg!");
+                        setText("You entered a negative or 0 value!");
                     }
                     else{
                         const data = {
-                            pushed_ores: {
-                                iron: ironTrade1,
-                                bronze: bronzeTrade1,
-                                silver: silverTrade1,
-                                gold: goldTrade1,
-                                diamond: diamondTrade1,
-                                ifirald: ifiraldTrade1
-                            },
-                            waited_ores: {
-                                iron: ironTrade2,
-                                bronze: bronzeTrade2,
-                                silver: silverTrade2,
-                                gold: goldTrade2,
-                                diamond: diamondTrade2,
-                                ifirald: ifiraldTrade2
-                            },
+                            part: part,
+                            nr: nr,
                             team: team,
                         }
                 
@@ -171,42 +169,11 @@ export default function Trade(props) {
                         axios.post(process.env.REACT_APP_API_URL + '/trade', data, {headers: headers})
                             .then((response) => {
                             if(!response.data.code){
-                                let pushed = "";
-                                if(ironTrade1 > 0) pushed += ironTrade1 + " - vas, ";
-                                if(bronzeTrade1 > 0) pushed += bronzeTrade1 + " - bronz, ";
-                                if(silverTrade1 > 0) pushed += silverTrade1 + " - ezüst, ";
-                                if(goldTrade1 > 0) pushed += goldTrade1 + " - arany, ";
-                                if(diamondTrade1 > 0) pushed += diamondTrade1 + " - gyémánt, ";
-                                if(ifiraldTrade1 > 0) pushed += ifiraldTrade1 + " - ifiráld, ";
-
-                                pushed = pushed.slice(0, -2)
-
-                                let waited = "";
-                                if(ironTrade2 > 0) waited += ironTrade2 + " - vas, ";
-                                if(bronzeTrade2 > 0) waited += bronzeTrade2 + " - bronz, ";
-                                if(silverTrade2 > 0) waited += silverTrade2 + " - ezüst, ";
-                                if(goldTrade2 > 0) waited += goldTrade2 + " - arany, ";
-                                if(diamondTrade2 > 0) waited += diamondTrade2 + " - gyémánt, ";
-                                if(ifiraldTrade2 > 0) waited += ifiraldTrade2 + " - ifiráld, ";
-
-                                waited = waited.slice(0, -2)
-
                                 setChange(!change);
                                 setOpen(true);
-                                setIronTrade1(0);
-                                setBronzeTrade1(0);
-                                setSilverTrade1(0);
-                                setGoldTrade1(0);
-                                setDiamondTrade1(0);
-                                setIfiraldTrade1(0);
-                                setIronTrade2(0);
-                                setBronzeTrade2(0);
-                                setSilverTrade2(0);
-                                setGoldTrade2(0);
-                                setDiamondTrade2(0);
-                                setIfiraldTrade2(0);
+                                setNr(0);
                                 setTeam("");
-                                setText(`Sikeresen ajálatot tettetek: ${pushed}. A(z) ${team} csapattól a következőket kértétek: ${waited}!`);
+                                setText(`You have successfully made an offer to the ${team}!`);
                             }
                             else
                             {
@@ -215,6 +182,15 @@ export default function Trade(props) {
                             }
                         });
                     }
+    }
+
+    switch(part) {
+        case 'shupp': partName = "Shupp"; break;
+        case 'omlas': partName = "Omlás"; break;
+        case 'porkolt': partName = "Pörkölt"; break;
+        case 'kaloz': partName = "Kalóz"; break;
+        case 'malna': partName = "Málna"; break;
+        default: partName = "Unknow";
     }
 
     return (
@@ -231,71 +207,12 @@ export default function Trade(props) {
                 </IconButton>
                 <ThemeProvider theme={theme}>
                     <Typography variant="h5" className={classes.text}>
-                        Visszalépés
+                        Back
                     </Typography>
                 </ThemeProvider>
                 </Toolbar>
             </AppBar>
             <div className={classes.info}>
-                <div className={classes.box}>
-                    <Box display="flex" >
-                        <Box flexGrow={1} p={1}>
-                            <Box 
-                                display="flex"
-                                alignItems="flex-start"
-                            >
-                                <Box p={1}>
-                                <img alt="XPs" src="/images/xp.png" className={classes.bar}/>
-                                </Box>
-                                <Box p={2}>
-                                <ThemeProvider theme={theme}>
-                                    <Typography variant="h5">
-                                        {xp}
-                                    </Typography>
-                                </ThemeProvider>
-                                </Box>
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box 
-                                display="flex"
-                                alignItems="flex-start"
-                            >
-                                <Box p={1}>
-                                <img alt="Poitns" src="/images/point.png" className={classes.bar}/>
-                                </Box>
-                                <Box p={2}>
-                                <ThemeProvider theme={theme}>
-                                    <Typography variant="h5">
-                                        {point}
-                                    </Typography>
-                                </ThemeProvider>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box>
-                </div>
-                <div className={classes.box}>
-                    <Box display="flex" justifyContent="center">
-                        <Box p={1}>
-                            <Box 
-                                display="flex"
-                                alignItems="center"
-                            >
-                                <Box p={1}>
-                                <img alt="Napi pont" src="/images/dailypoint.png" className={classes.bar}/>
-                                </Box>
-                                <Box p={2}>
-                                <ThemeProvider theme={theme}>
-                                    <Typography variant="h5">
-                                        {dailyPoint}
-                                    </Typography>
-                                </ThemeProvider>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box>
-                    </div>
                 <Box
                     display="flex"
                     flexWrap="wrap"
@@ -305,173 +222,87 @@ export default function Trade(props) {
                 >
                     <Box p={1}>
                         <OreCard 
-                        src='./images/iron.png'
-                        title='Vas'
-                        ore={iron}
-                        scale='darab'
+                        src='./images/xp.png'
+                        title='XP'
+                        ore={xp}
+                        scale='XP'
                         />
                     </Box>
                     <Box p={1}>
                         <OreCard 
-                        src='./images/bronze.png'
-                        title='Bronz'
-                        ore={bronze}
-                        scale='darab'
+                        src='./images/ifilogo.png'
+                        title='Ifipont'
+                        ore={ifipoint}
+                        scale='point'
                         />
                     </Box>
                     <Box p={1}>
                         <OreCard 
-                        src='./images/silver.png'
-                        title='Ezüst'
-                        ore={silver}
-                        scale='darab'
+                            src={`./images/${part}.png`}
+                            title={`${partName}`}
+                            ore={price}
+                            scale='XP'
+                        />
+                    </Box>
+                </Box>
+                <Box
+                    display="flex"
+                    flexWrap="wrap"
+                    justifyContent="center"
+                    p={1}
+                    m={1}
+                >
+                    <Box p={1}>
+                        <OreCard 
+                            src='./images/shupp.png'
+                            title='Shupp'
+                            ore={shupp}
+                            scale='piece'
                         />
                     </Box>
                     <Box p={1}>
                         <OreCard 
-                        src='./images/gold.png'
-                        title='Arany'
-                        ore={gold}
-                        scale='darab'
+                            src='./images/omlas.png'
+                            title='Omlás'
+                            ore={omlas}
+                            scale='piece'
                         />
                     </Box>
                     <Box p={1}>
                         <OreCard 
-                        src='./images/diamond.png'
-                        title='Gyémánt'
-                        ore={diamond}
-                        scale='darab'
+                            src='./images/porkolt.png'
+                            title='Pörkölt'
+                            ore={porkolt}
+                            scale='piece'
                         />
                     </Box>
                     <Box p={1}>
                         <OreCard 
-                        src='./images/ifirald.png'
-                        title='Ifiráld'
-                        ore={ifirald}
-                        scale='darab'
+                            src='./images/kaloz.png'
+                            title='Kalóz'
+                            ore={kaloz}
+                            scale='piece'
+                        />
+                    </Box>
+                    <Box p={1}>
+                        <OreCard 
+                            src='./images/malna.png'
+                            title='Málna'
+                            ore={malna}
+                            scale='piece'
                         />
                     </Box>
                 </Box>
                 <ThemeProvider theme={theme}>
                     <Typography variant="h3" className={classes.text}>
-                        Csere
+                        Exchange
                     </Typography>
                 </ThemeProvider>
-                <form className={classes.form} onSubmit={handleSubmit} noValidate>
-                    <Box
-                        display="flex"
-                        flexWrap="wrap"
-                        justifyContent="center"
-                        p={1}
-                        m={1}
-                    >
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/iron.png' alt='Vasérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_iron1"
-                                    onChange={e => setIronTrade1(e.target.value)}
-                                    label="Mennyiség"
-                                    value={ironTrade1}
-                                    type="number"
-                                    name="price_iron1"
-                                    inputProps= {{ min:0, max: iron }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/bronze.png' alt='Bronzérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="nr_bronze1"
-                                    onChange={e => setBronzeTrade1(e.target.value)}
-                                    label="Mennyiség"
-                                    value={bronzeTrade1}
-                                    type="number"
-                                    name="nr_bronze1"
-                                    inputProps= {{ min:0, max: bronze }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/silver.png' alt='Ezüstérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_silver1"
-                                    onChange={e => setSilverTrade1(e.target.value)}
-                                    label="Mennyiség"
-                                    value={silverTrade1}
-                                    type="number"
-                                    name="price_silver1"
-                                    inputProps= {{ min:0, max: silver }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/gold.png' alt='Aranyérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_gold1"
-                                    onChange={e => setGoldTrade1(e.target.value)}
-                                    label="Mennyiség"
-                                    value={goldTrade1}
-                                    type="number"
-                                    name="price_gold1"
-                                    inputProps= {{ min:0, max: gold }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/diamond.png' alt='Gyémántérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_diamond1"
-                                    onChange={e => setDiamondTrade1(e.target.value)}
-                                    label="Mennyiség"
-                                    value={diamondTrade1}
-                                    type="number"
-                                    name="price_diamond1"
-                                    inputProps= {{ min:0, max: diamond }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/ifirald.png' alt='Ifiráldérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_ifirald1"
-                                    onChange={e => setIfiraldTrade1(e.target.value)}
-                                    label="Mennyiség"
-                                    value={ifiraldTrade1}
-                                    type="number"
-                                    name="price_ifirald1"
-                                    inputProps= {{ min:0, max: ifirald }}
-                                />
-                            </Box>
-                        </Box>
-                    </Box>
+                <form className={classes.form} onSubmit={handleSubmit} noValidate>                        
                     <div className={classes.box}>
-                        <Box
-                            display="flex"
-                            flexWrap="wrap"
-                            justifyContent="center"
-                            p={1}
-                            m={1}
-                        >    
+                        <Box p={1} m={1} >    
                             <Box p={1}>
-                                <InputLabel htmlFor="team"> Akivel cseréltek </InputLabel>
+                                <InputLabel htmlFor="team"> Who did you trade with? </InputLabel>
                                 <Select 
                                     native 
                                     required
@@ -488,113 +319,22 @@ export default function Trade(props) {
                                             <option key={i} value={t}>{t}</option>
                                     ))}
                                 </Select>
+                                <Box my={2}>
+                                    <TextField
+                                        id="darab"
+                                        fullWidth
+                                        variant="outlined"
+                                        onChange={e => setNr(e.target.value)}
+                                        label="How many pieces?"
+                                        value={nr}
+                                        type="number"
+                                        name="darab"
+                                        inputProps= {{ min:0, max: 100 }}
+                                    />
+                                </Box>
                             </Box>
                         </Box>
                     </div>
-                    <Box
-                        display="flex"
-                        flexWrap="wrap"
-                        justifyContent="center"
-                        p={1}
-                        m={1}
-                    >
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/iron.png' alt='Vasérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_iron2"
-                                    onChange={e => setIronTrade2(e.target.value)}
-                                    label="Mennyiség"
-                                    value={ironTrade2}
-                                    type="number"
-                                    name="price_iron2"
-                                    inputProps= {{ min:0, max: 100 }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/bronze.png' alt='Bronzérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="nr_bronze2"
-                                    onChange={e => setBronzeTrade2(e.target.value)}
-                                    label="Mennyiség"
-                                    value={bronzeTrade2}
-                                    type="number"
-                                    name="nr_bronze2"
-                                    inputProps= {{ min:0, max: 100 }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/silver.png' alt='Ezüstérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_silver2"
-                                    onChange={e => setSilverTrade2(e.target.value)}
-                                    label="Mennyiség"
-                                    value={silverTrade2}
-                                    type="number"
-                                    name="price_silver2"
-                                    inputProps= {{ min:0, max: 100 }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/gold.png' alt='Aranyérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_gold2"
-                                    onChange={e => setGoldTrade2(e.target.value)}
-                                    label="Mennyiség"
-                                    value={goldTrade2}
-                                    type="number"
-                                    name="price_gold2"
-                                    inputProps= {{ min:0, max: 100 }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/diamond.png' alt='Gyémántérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_diamond2"
-                                    onChange={e => setDiamondTrade2(e.target.value)}
-                                    label="Mennyiség"
-                                    value={diamondTrade2}
-                                    type="number"
-                                    name="price_diamond2"
-                                    inputProps= {{ min:0, max: 100 }}
-                                />
-                            </Box>
-                        </Box>
-                        <Box p={1}>
-                            <Box p={1}>
-                                <img src='./images/ifirald.png' alt='Ifiráldérc' className={classes.image}/>
-                            </Box>  
-                            <Box p={1}>
-                                <TextField
-                                    id="price_ifirald2"
-                                    onChange={e => setIfiraldTrade2(e.target.value)}
-                                    label="Mennyiség"
-                                    value={ifiraldTrade2}
-                                    type="number"
-                                    name="price_ifirald2"
-                                    inputProps= {{ min:0, max: 100 }}
-                                />
-                            </Box>
-                        </Box>
-                    </Box>
                     <Button
                         type="submit"
                         fullWidth
@@ -602,7 +342,7 @@ export default function Trade(props) {
                         color="primary"
                         className={classes.submit}
                     >
-                        Csere
+                        Exchange
                     </Button>
                 </form>
                 <PopupAlert 

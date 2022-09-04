@@ -78,7 +78,7 @@ export default function SignUp(props) {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Regisztráció
+                        SIGN UP
                     </Typography>
                     <form className={classes.form} onSubmit={handleSubmit} noValidate>
                         <Grid container spacing={2}>
@@ -89,7 +89,7 @@ export default function SignUp(props) {
                                     required
                                     fullWidth
                                     id="team"
-                                    label="Csapat neve"
+                                    label="Team name"
                                     onChange={e => setTeam(e.target.value)}
                                     autoFocus
                                 />
@@ -101,7 +101,7 @@ export default function SignUp(props) {
                                     required
                                     fullWidth
                                     id="name"
-                                    label="Csapatkapitány neve"
+                                    label="Team captain name"
                                     onChange={e => setName(e.target.value)}
                                     autoFocus
                                 />
@@ -112,7 +112,7 @@ export default function SignUp(props) {
                                     required
                                     fullWidth
                                     id="email"
-                                    label="E-mail cím"
+                                    label="E-mail adress"
                                     name="email"
                                     onChange={e => setEmail(e.target.value)}
                                 />
@@ -123,7 +123,7 @@ export default function SignUp(props) {
                                     required
                                     fullWidth
                                     name="password"
-                                    label="Jelszó"
+                                    label="Password"
                                     type="password"
                                     id="password"
                                     onChange={e => setPassword(e.target.value)}
@@ -135,7 +135,7 @@ export default function SignUp(props) {
                                     required
                                     fullWidth
                                     name="password2"
-                                    label="Jelszó újra"
+                                    label="Confirm password"
                                     type="password"
                                     id="password2"
                                     onChange={e => setPassword2(e.target.value)}
@@ -149,12 +149,12 @@ export default function SignUp(props) {
                             color="primary"
                             className={classes.submit}
                         >
-                            Regisztrálás
+                            SIGN UP
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link href="" onClick={handleChange} variant="body2">
-                                    Már regisztráltál? Jelentkezz be!
+                                    Already registered? SIGN IN!
                                 </Link>
                             </Grid>
                         </Grid>

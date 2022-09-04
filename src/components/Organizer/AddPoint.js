@@ -13,20 +13,14 @@ import {
   Grid,
   Container,
   CssBaseline,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper
+  Box
 } from '@material-ui/core';
 
 import { useHistory } from 'react-router-dom';
 import { useStyles } from '../../styles/teamAndOrganizerPagesStyle';
-import { withStyles } from '@material-ui/core/styles';
 
 import PopupAlert from '../PopupAlert';
+import OreCard from '../OreCard';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AddIcon from '@material-ui/icons/Add';
@@ -36,24 +30,6 @@ import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/co
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.common.white,
-  },
-  body: {
-      fontSize: 14,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-      '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-      },
-  },
-}))(TableRow);
 
 export default function AddPoint(props) {
   const [open, setOpen] = useState(false);
@@ -65,7 +41,7 @@ export default function AddPoint(props) {
   const [team2, setTeam2] = useState('');
   const [teams, setTeams] = useState([]);
   const [otp, setOtp] = useState(0);
-  const [points, setPoints] = useState([]);
+  const [prices, setPrices] = useState([]);
 
   const classes = useStyles();
   const history = useHistory();
@@ -94,10 +70,10 @@ export default function AddPoint(props) {
       'Authorization': `Bearer ${props.token}`
     }
 
-    axios.post(process.env.REACT_APP_API_URL + '/team_info', {}, {headers: headers})
+    axios.post(process.env.REACT_APP_API_URL + '/prices', {}, {headers: headers})
     .then((response) => {
       if(!response.data.code){
-        setPoints(response.data.points);
+        setPrices(response.data.prices);
       }
       else
       {
@@ -211,7 +187,7 @@ export default function AddPoint(props) {
         setText("Add meg az csapatot!");
       }
       else
-        axios.post(process.env.REACT_APP_API_URL + '/ores_to_points', data, {headers: headers})
+        axios.post(process.env.REACT_APP_API_URL + '/cash_ifipoint', data, {headers: headers})
           .then((response) => {
           if(!response.data.code){
             setOpen(true);
@@ -390,58 +366,28 @@ export default function AddPoint(props) {
                 Pontos feladatok árai
             </Typography>
         </ThemeProvider>
-        <TableContainer component={Paper} className={classes.container}>
-            <Table className={classes.table} aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell> 
-                          <ThemeProvider theme={theme}>
-                            <Typography variant="h6">
-                              Pontok
-                            </Typography>
-                          </ThemeProvider>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/iron.png' alt='Vas' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/bronze.png' alt='Bronz' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/silver.png' alt='Ezüst' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/gold.png' alt='Arany' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/diamond.png' alt='Gyémánt' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/ifirald.png' alt='Ifiráld' className={classes.table_icon}/>
-                        </StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                {
-                    points.map((point,i) => (
-                        <>
-                            <StyledTableRow key={i}>
-                                <StyledTableCell component="th" scope="row">
-                                  <img src={'./images/' + (i+1)*100 + '.png'} alt={(i+1)*100 + ' pont'} className={classes.table_icon}/>
-                                </StyledTableCell>
-                                <StyledTableCell align="center">{point.iron}</StyledTableCell>
-                                <StyledTableCell align="center">{point.bronze}</StyledTableCell>
-                                <StyledTableCell align="center">{point.silver}</StyledTableCell>
-                                <StyledTableCell align="center">{point.gold}</StyledTableCell>
-                                <StyledTableCell align="center">{point.diamond}</StyledTableCell>
-                                <StyledTableCell align="center">{point.ifirald}</StyledTableCell>
-                            </StyledTableRow>
-                        </>
-                    ))
-                }
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <div className={classes.info}>
+          <Box
+              display="flex"
+              flexWrap="wrap"
+              justifyContent="center"
+              p={1}
+              m={1}
+          >
+            {
+              prices.map((price,i) => (
+                <Box p={1} key={i}>
+                  <OreCard 
+                    src={'./images/' + (i+1)*100 + '.png'}
+                    title={price.price}
+                    ore=''
+                    scale='ifipont'
+                  />
+                </Box>
+              ))
+            }
+          </Box>
+        </div>
         <PopupAlert 
           open={open}
           handleClose={handleClose}

@@ -39,9 +39,9 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleChange = () => {
+  /*const handleChange = () => {
     history.push('/signup');
-  }
+  }*/
 
   const handleChange2 = () => {
     history.push('/forgotten_pass');
@@ -79,8 +79,7 @@ export default function SignIn(props) {
         open={props.open}
         handleClose={props.handleClose}
         handleClickOpen={props.handleClickOpen}
-        text="Egy e-mailt küldtünk a megadott címre. Kérjük visszaigazolni a regisztrációt
-          a benne található linken keresztül!"
+        text="An email has been sent to the address provided. Please confirm the registration via the link in it!"
       />
       <CssBaseline />
         <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -90,7 +89,7 @@ export default function SignIn(props) {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Bejelentkezés
+                SIGN IN
               </Typography>
               <form className={classes.form} onSubmit={handleSubmit} noValidate>
                 <TextField
@@ -100,7 +99,7 @@ export default function SignIn(props) {
                   fullWidth
                   id="email"
                   type="email"
-                  label="E-mail cím"
+                  label="E-mail adress"
                   name="email"
                   onChange={e => setEmail(e.target.value)}
                   autoFocus
@@ -111,7 +110,7 @@ export default function SignIn(props) {
                   required
                   fullWidth
                   name="password"
-                  label="Jelszó"
+                  label="Password"
                   type="password"
                   id="password"
                   onChange={e => setPassword(e.target.value)}
@@ -123,19 +122,19 @@ export default function SignIn(props) {
                   color="primary"
                   className={classes.submit}
                 >
-                  Bejelentkezés
+                  SIGN IN
                 </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link href="" onClick={handleChange2} variant="body2">
-                      Jelszó megváltoztatása
+                      Change password
                     </Link>
                   </Grid>
-                  {<Grid item>
+                  {/*<Grid item>
                     <Link href="" onClick={handleChange} variant="body2">
-                      Nem tudsz bejelentkezni? Regisztrálj!
+                      Not registered yet? SIGN UP!
                     </Link>
-                  </Grid>}
+                  </Grid>*/}
                 </Grid>
                 <Box mt={5}>
                   <Copyright />

@@ -63,7 +63,7 @@ export default function Team(props) {
           </IconButton>
           <ThemeProvider theme={theme}>
             <Typography variant="h5" className={classes.text}>
-                Kijelentkezés
+                LOG OUT
             </Typography>
           </ThemeProvider>
         </Toolbar>
@@ -93,7 +93,7 @@ export default function Team(props) {
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
-                      Információ
+                      Information
                   </Typography>
                 </ThemeProvider>
               </Paper>
@@ -107,7 +107,7 @@ export default function Team(props) {
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
-                      Bolt
+                      Shop
                   </Typography>
                 </ThemeProvider>
               </Paper>
@@ -131,7 +131,7 @@ export default function Team(props) {
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
-                      Csere
+                    Exchange
                   </Typography>
                 </ThemeProvider>
               </Paper>
@@ -145,7 +145,7 @@ export default function Team(props) {
                 </Avatar>
                 <ThemeProvider theme={theme}>
                   <Typography variant="h5" className={classes.text}>
-                      Ajánlatok
+                      Offers
                   </Typography>
                 </ThemeProvider>
               </Paper>

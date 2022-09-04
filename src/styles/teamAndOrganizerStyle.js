@@ -20,7 +20,7 @@ export const useStyles = makeStyles((theme) => ({
   appbar: {
     padding: theme.spacing(0),
     margin: theme.spacing(0),
-    height: '8vh',
+    height: '10vh',
     width: '100vw',
   },
   paper: {
@@ -37,6 +37,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   text: {
     margin: theme.spacing(3),
+    textAlign: 'center'
   },
   icon: {
     width: '5vh',

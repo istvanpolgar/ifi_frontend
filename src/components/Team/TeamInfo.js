@@ -14,7 +14,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Fab
+  Fab,
 } from '@material-ui/core';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -26,9 +26,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 import PopupAlert from '../PopupAlert';
 import OreCard from '../OreCard';
-
-import Utmutato from '../../pdfs/Utmutato.pdf';
-import Ghid from '../../pdfs/Ghid.pdf';
 
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 
@@ -59,21 +56,43 @@ export default function TeamInfo(props) {
   const [text, setText] = useState();
   
   const [xp, setXp] = useState(0);
+  const [ifipoint, setIfipoint] = useState(0);
   const [point, setPoint] = useState(0);
   const [dailyPoint, setDailyPoint] = useState(0);
   const [hourXp, setHourXp] = useState(0);
-  const [iron, setIron] = useState(0);
-  const [bronze, setBronze] = useState(0);
-  const [silver, setSilver] = useState(0);
-  const [gold, setGold] = useState(0);
-  const [diamond, setDiamond] = useState(0);
-  const [ifirald, setIfirald] = useState(0);
+  const [shupp, setShupp] = useState(0);
+  const [omlas, setOmlas] = useState(0);
+  const [porkolt, setPorkolt] = useState(0);
+  const [kaloz, setKaloz] = useState(0);
+  const [malna, setMalna] = useState(0);
+  const [part, setPart] = useState("");
+  const [price, setPrice] = useState(0);
+  const [team, setTeam] = useState("");
 
   const [trades, setTrades] = useState([]);
-  const [points, setPoints] = useState([]);
+  const [prices, setPrices] = useState([]);
+  const [show, setShow] = useState(false);
 
   const history = useHistory();
   const classes = useStyles();
+  let partName = "";
+
+  useEffect(() => {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${props.token}`
+    }
+
+    axios.post(process.env.REACT_APP_API_URL + '/part_price', {}, {headers: headers})
+        .then((response) => {
+        if(!response.data.code)
+            setPrice(response.data.price);
+        else
+        {
+            console.log(response.data.message);
+        }
+    });
+},[props.token])
 
   useEffect(() => {
     const headers = {
@@ -85,24 +104,33 @@ export default function TeamInfo(props) {
     .then((response) => {
       if(!response.data.code){
         setXp(response.data.stats.xp);
+        setIfipoint(response.data.stats.ifipoint);
         setHourXp(response.data.hxp);
+        setTeam(response.data.team);
         setPoint(response.data.stats.point);
         setDailyPoint(response.data.stats.daily_point);
-        setIron(response.data.stats.ores.iron);
-        setBronze(response.data.stats.ores.bronze);
-        setSilver(response.data.stats.ores.silver);
-        setGold(response.data.stats.ores.gold);
-        setDiamond(response.data.stats.ores.diamond);
-        setIfirald(response.data.stats.ores.ifirald);
-        setPoints(response.data.points);
+        setShupp(response.data.stats.parts.shupp);
+        setOmlas(response.data.stats.parts.omlas);
+        setPorkolt(response.data.stats.parts.porkolt);
+        setKaloz(response.data.stats.parts.kaloz);
+        setMalna(response.data.stats.parts.malna);
+        setPart(response.data.stats.part);
+        setPrices(response.data.prices);
       }
       else
       {
         console.log(response.data.message);
       }
     });
-  },[props.token,change])
-
+  },[props.token,change,shupp,omlas,porkolt,kaloz,malna])
+  
+  useEffect(() => {
+    if(shupp>=1 && omlas>=1 && porkolt>=1 && kaloz>=1 && malna>=1)
+      setShow(true);
+    else
+      setShow(false);
+},[props.token,change,shupp,omlas,porkolt,kaloz,malna])
+  
   useEffect(() => {
     const headers = {
         'Content-Type': 'application/json',
@@ -134,8 +162,8 @@ export default function TeamInfo(props) {
   }
 
   const handleRefuze = (trade) => {
-    console.log(trade);
     const data = {
+        part: part,
         trade: trade
     }
 
@@ -149,7 +177,7 @@ export default function TeamInfo(props) {
         if(!response.data.code){
             setChange(!change);
             setOpen(true);
-            setText(`Visszavontátok az ajánlatot a(z) ${response.data.team} csapattól!`);
+            setText(`You withdrew the offer from the team ${response.data.team}!`);
         }
         else
         {
@@ -159,6 +187,48 @@ export default function TeamInfo(props) {
     });
   };
 
+  const handleAdd = () => {
+    if(shupp>=1 && omlas>=1 && porkolt>=1 && kaloz>=1 && malna>=1)
+    {
+      const data = {
+        team: team
+      }
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${props.token}`
+      }
+      
+      axios.post(process.env.REACT_APP_API_URL + '/add_ifipoint', data, {headers: headers})
+        .then((response) => {
+        if(!response.data.code){
+          setOpen(true);
+          setChange(!change);
+          setPoint(0);
+          setText(`Added 1 Ifi point!`);
+        }
+        else{
+            setOpen(true);
+            setText(response.data.message);
+        }
+      });
+    }
+    else
+    {
+      setOpen(true);
+      setText("You need at least 1 piece of everything to redeem it!");
+    }
+  };  
+
+  switch(part) {
+    case 'shupp': partName = "Shupp"; break;
+    case 'omlas': partName = "Omlás"; break;
+    case 'porkolt': partName = "Pörkölt"; break;
+    case 'kaloz': partName = "Kalóz"; break;
+    case 'malna': partName = "Málna"; break;
+    default: partName = "Unknow";
+  }
+  
   return (
     <div className={classes.root}>
       <AppBar className={classes.appbar}>
@@ -173,96 +243,38 @@ export default function TeamInfo(props) {
           </IconButton>
           <ThemeProvider theme={theme}>
             <Typography variant="h5" className={classes.text}>
-                Visszalépés
+                Back
             </Typography>
           </ThemeProvider>
         </Toolbar>
       </AppBar>
       <div className={classes.info}>
-        <div className={classes.box}>
-          <Box display="flex" >
-            <Box flexGrow={1} p={1}>
-              <a href = {Utmutato} target = "_blank" rel="noreferrer" className={classes.anchor}>Használati útmutató letöltése</a>
-            </Box>
-            <Box p={1}>
-              <a href = {Ghid} target = "_blank" rel="noreferrer" className={classes.anchor}>Descarcă ghid pentru utilizatori</a>
-            </Box>
+        <ThemeProvider theme={theme}>
+            <Typography variant="h3" className={classes.text}>
+                Current piece of the team {team}
+            </Typography>
+        </ThemeProvider>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+          p={1}
+          m={1}
+        >
+          <Box px={10} py={1}>
+            <OreCard 
+              src={`./images/${part}.png`}
+              title={`${partName}`}
+              ore={price}
+              scale='xp'
+            />
           </Box>
-          <Box display="flex" >
-            <Box flexGrow={1} p={1}>
-              <Box 
-                display="flex"
-                alignItems="flex-start"
-              >
-                <Box p={1}>
-                  <img alt="XPs" src="/images/xp.png" className={classes.bar}/>
-                </Box>
-                <Box p={2}>
-                  <ThemeProvider theme={theme}>
-                    <Typography variant="h5">
-                        {xp}
-                    </Typography>
-                  </ThemeProvider>
-                </Box>
-              </Box>
-            </Box>
-            <Box p={1}>
-              <Box 
-                display="flex"
-                alignItems="flex-start"
-              >
-                <Box p={1}>
-                  <img alt="Poitns" src="/images/point.png" className={classes.bar}/>
-                </Box>
-                <Box p={2}>
-                  <ThemeProvider theme={theme}>
-                    <Typography variant="h5">
-                        {point}
-                    </Typography>
-                  </ThemeProvider>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </div>
-        <div className={classes.box}>
-          <Box display="flex" justifyContent="center">
-            <Box flexGrow={1} p={1}>
-              <Box 
-                display="flex"
-                alignItems="center"
-              >
-                <Box p={1}>
-                  <img alt="Óránkénti XP" src="/images/hourxp.png" className={classes.bar}/>
-                </Box>
-                <Box p={2}>
-                  <ThemeProvider theme={theme}>
-                    <Typography variant="h5">
-                        {hourXp}
-                    </Typography>
-                  </ThemeProvider>
-                </Box>
-              </Box>
-            </Box>
-            <Box p={1}>
-              <Box 
-                display="flex"
-                alignItems="center"
-              >
-                <Box p={1}>
-                  <img alt="Napi pont" src="/images/dailypoint.png" className={classes.bar}/>
-                </Box>
-                <Box p={2}>
-                  <ThemeProvider theme={theme}>
-                    <Typography variant="h5">
-                        {dailyPoint}
-                    </Typography>
-                  </ThemeProvider>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </div>
+        </Box>
+        <ThemeProvider theme={theme}>
+            <Typography variant="h3" className={classes.text}>
+              The stock of the team {team} 
+            </Typography>
+        </ThemeProvider>
         <Box
           display="flex"
           flexWrap="wrap"
@@ -272,109 +284,160 @@ export default function TeamInfo(props) {
         >
           <Box p={1}>
             <OreCard 
-              src='./images/iron.png'
-              title='Vas'
-              ore={iron}
-              scale='darab'
+              src='./images/xp.png'
+              title='XP'
+              ore={xp}
+              scale='XP'
             />
           </Box>
           <Box p={1}>
             <OreCard 
-              src='./images/bronze.png'
-              title='Bronz'
-              ore={bronze}
-              scale='darab'
+              src='./images/point.png'
+              title='Point'
+              ore={point}
+              scale='point'
             />
           </Box>
           <Box p={1}>
             <OreCard 
-              src='./images/silver.png'
-              title='Ezüst'
-              ore={silver}
-              scale='darab'
+              src='./images/ifilogo.png'
+              title='Ifipoint'
+              ore={ifipoint}
+              scale='point'
             />
           </Box>
           <Box p={1}>
             <OreCard 
-              src='./images/gold.png'
-              title='Arany'
-              ore={gold}
-              scale='darab'
+              src='./images/max.png'
+              title='Daily'
+              ore={dailyPoint}
+              scale='point'
             />
           </Box>
           <Box p={1}>
             <OreCard 
-              src='./images/diamond.png'
-              title='Gyémánt'
-              ore={diamond}
-              scale='darab'
+              src='./images/hourxp.png'
+              title='/hour'
+              ore={hourXp}
+              scale='xp'
+            />
+          </Box>
+        </Box>
+        <ThemeProvider theme={theme}>
+            <Typography variant="h3" className={classes.text}>
+              Collectable pieces
+            </Typography>
+        </ThemeProvider>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+          p={1}
+          m={1}
+        >
+          <Box p={1}>
+            <OreCard 
+              src='./images/shupp.png'
+              title='Shupp'
+              ore={shupp}
+              scale='piece'
             />
           </Box>
           <Box p={1}>
             <OreCard 
-              src='./images/ifirald.png'
-              title='Ifiráld'
-              ore={ifirald}
-              scale='darab'
+              src='./images/omlas.png'
+              title='Omlas'
+              ore={omlas}
+              scale='piece'
+            />
+          </Box>
+          <Box p={1}>
+            <OreCard 
+              src='./images/porkolt.png'
+              title='Pörkölt'
+              ore={porkolt}
+              scale='piece'
+            />
+          </Box>
+          <Box p={1}>
+            <OreCard 
+              src='./images/kaloz.png'
+              title='Kalóz'
+              ore={kaloz}
+              scale='piece'
+            />
+          </Box>
+          <Box p={1}>
+            <OreCard 
+              src='./images/malna.png'
+              title='Málna'
+              ore={malna}
+              scale='piece'
+            />
+          </Box>
+          { (() => {
+            if(show)
+              return (
+                <Box p={1} onClick = {handleAdd}>
+                  <OreCard 
+                      src='./images/ifilogo.png'
+                      title='+1'
+                      ore=''
+                      scale='ifipont'
+                  />
+                </Box>
+          )})()}
+        </Box>
+
+        <ThemeProvider theme={theme}>
+            <Typography variant="h3" className={classes.text}>
+              Prices of redeemable tasks
+            </Typography>
+        </ThemeProvider>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+          p={1}
+          m={1}
+        >
+          <Box p={1}>
+            <OreCard 
+              src='./images/100.png'
+              title=''
+              ore={prices.houndred1}
+              scale='ifipoint'
+            />
+          </Box>
+          <Box p={1}>
+            <OreCard 
+              src='./images/200.png'
+              title=''
+              ore={prices.houndred2}
+              scale='ifipoint'
+            />
+          </Box>
+          <Box p={1}>
+            <OreCard 
+              src='./images/300.png'
+              title=''
+              ore={prices.houndred3}
+              scale='ifipoint'
+            />
+          </Box>
+          <Box p={1}>
+            <OreCard 
+              src='./images/400.png'
+              title=''
+              ore={prices.houndred4}
+              scale='ifipoint'
             />
           </Box>
         </Box>
 
         <ThemeProvider theme={theme}>
             <Typography variant="h3" className={classes.text}>
-                Kiváltható feladatok árai
-            </Typography>
-        </ThemeProvider>
-        <TableContainer component={Paper} className={classes.container}>
-            <Table className={classes.table} aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell> Pont </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/iron.png' alt='Vas' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/bronze.png' alt='Bronz' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/silver.png' alt='Ezüst' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/gold.png' alt='Arany' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/diamond.png' alt='Gyémánt' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/ifirald.png' alt='Ifiráld' className={classes.table_icon}/>
-                        </StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                {
-                    points.map((point,i) => (
-                        <>
-                            <StyledTableRow key={i}>
-                                <StyledTableCell component="th" scope="row">
-                                  <img src={'./images/' + (i+1)*100 + '.png'} alt={(i+1)*100 + ' pont'} className={classes.table_icon}/>
-                                </StyledTableCell>
-                                <StyledTableCell align="center">{point.iron}</StyledTableCell>
-                                <StyledTableCell align="center">{point.bronze}</StyledTableCell>
-                                <StyledTableCell align="center">{point.silver}</StyledTableCell>
-                                <StyledTableCell align="center">{point.gold}</StyledTableCell>
-                                <StyledTableCell align="center">{point.diamond}</StyledTableCell>
-                                <StyledTableCell align="center">{point.ifirald}</StyledTableCell>
-                            </StyledTableRow>
-                        </>
-                    ))
-                }
-                </TableBody>
-            </Table>
-        </TableContainer>
-
-        <ThemeProvider theme={theme}>
-            <Typography variant="h3" className={classes.text}>
-                Ajánlataitok listája
+              List of your offers
             </Typography>
         </ThemeProvider>
         <TableContainer component={Paper} className={classes.container}>
@@ -384,32 +447,23 @@ export default function TeamInfo(props) {
                         <StyledTableCell>
                           <ThemeProvider theme={theme}>
                               <Typography variant="h6">
-                                  Csapatok
+                                  Teams
                               </Typography>
                           </ThemeProvider>
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                            <img src='./images/iron.png' alt='Vas' className={classes.table_icon}/>
+                            <img src='./images/give.png' alt='Give' className={classes.table_icon}/>
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                            <img src='./images/bronze.png' alt='Bronz' className={classes.table_icon}/>
+                            <img src='./images/get.png' alt='Get' className={classes.table_icon}/>
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                            <img src='./images/silver.png' alt='Ezüst' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/gold.png' alt='Arany' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/diamond.png' alt='Gyémánt' className={classes.table_icon}/>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <img src='./images/ifirald.png' alt='Ifiráld' className={classes.table_icon}/>
+                            <img src='./images/nr.png' alt='Number' className={classes.table_icon}/>
                         </StyledTableCell>
                         <StyledTableCell align="center"> 
                           <ThemeProvider theme={theme}>
                             <Typography variant="h6">
-                              Visszavonás
+                              Refuze
                             </Typography>
                           </ThemeProvider> 
                         </StyledTableCell>
@@ -417,42 +471,30 @@ export default function TeamInfo(props) {
                 </TableHead>
                 <TableBody>
                 {
-                    trades.map((trade,i) => (
-                        <>
-                            <StyledTableRow key={i+1}>
-                                <StyledTableCell component="th" scope="row">
-                                    Ajánlat a(z) {trade.team} csapatnak
-                                </StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.pushed_ores.iron}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.pushed_ores.bronze}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.pushed_ores.silver}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.pushed_ores.gold}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.pushed_ores.diamond}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.pushed_ores.ifirald}</StyledTableCell>
-                                <StyledTableCell rowSpan={2} align="center">
-                                  <Fab
-                                      component="button"
-                                      className={classes.submit}
-                                      onClick={() => {handleRefuze(trade)}}
-                                      size="small"
-                                  >
-                                      <CloseIcon /> 
-                                  </Fab>
-                                </StyledTableCell>
-                            </StyledTableRow>
-                            <StyledTableRow key={(i+1)*10+i}>
-                                <StyledTableCell component="th" scope="row">
-                                  Kérés a(z) {trade.team} csapattól
-                                </StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.waited_ores.iron}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.waited_ores.bronze}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.waited_ores.silver}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.waited_ores.gold}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.waited_ores.diamond}</StyledTableCell>
-                                <StyledTableCell align="center">{trade.trade.waited_ores.ifirald}</StyledTableCell>
-                            </StyledTableRow>
-                        </>
-                    ))
+                  trades.map((trade,i) => (
+                    <StyledTableRow key={i+1}>
+                        <StyledTableCell component="th" scope="row">
+                            Offer for team {trade.team}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                            <img src={`./images/${trade.trade.give}.png`} alt='Give' className={classes.table_icon}/>
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                            <img src={'./images/what.png'} alt='Get' className={classes.table_icon}/>
+                        </StyledTableCell>
+                        <StyledTableCell align="center">{trade.trade.nr}</StyledTableCell>
+                        <StyledTableCell align="center">
+                          <Fab
+                              component="button"
+                              className={classes.submit}
+                              onClick={() => {handleRefuze(trade)}}
+                              size="small"
+                          >
+                              <CloseIcon /> 
+                          </Fab>
+                        </StyledTableCell>
+                    </StyledTableRow>
+                  ))
                 }
                 </TableBody>
             </Table>
