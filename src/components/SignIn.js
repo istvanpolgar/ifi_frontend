@@ -39,9 +39,9 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  /*const handleChange = () => {
+  const handleChange = () => {
     history.push('/signup');
-  }*/
+  }
 
   const handleChange2 = () => {
     history.push('/forgotten_pass');
@@ -130,11 +130,11 @@ export default function SignIn(props) {
                       Change password
                     </Link>
                   </Grid>
-                  {/*<Grid item>
+                  <Grid item>
                     <Link href="" onClick={handleChange} variant="body2">
                       Not registered yet? SIGN UP!
                     </Link>
-                  </Grid>*/}
+                  </Grid>
                 </Grid>
                 <Box mt={5}>
                   <Copyright />

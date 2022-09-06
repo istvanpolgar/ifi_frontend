@@ -351,15 +351,8 @@ export default function SetUp(props) {
                     teams.map((team,i) => (                    
                       <div className={classes.margin} key={i}>
                         <Grid container spacing={1} alignItems="flex-end">
-                          <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-                          <ThemeProvider theme={theme}>
-                            <Typography variant="h5" className={classes.text}>
-                                {team}
-                            </Typography>
-                          </ThemeProvider>
-                          </Grid>
                           <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
-                            <InputLabel htmlFor="team"> Csapat </InputLabel>
+                            <InputLabel htmlFor="team"> {team} csapat Ifidarbkája</InputLabel>
                             <Select 
                               native 
                               fullWidth

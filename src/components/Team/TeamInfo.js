@@ -266,7 +266,7 @@ export default function TeamInfo(props) {
               src={`./images/${part}.png`}
               title={`${partName}`}
               ore={price}
-              scale='xp'
+              scale='XP'
             />
           </Box>
         </Box>
@@ -346,7 +346,7 @@ export default function TeamInfo(props) {
           <Box p={1}>
             <OreCard 
               src='./images/omlas.png'
-              title='Omlas'
+              title='Omlás'
               ore={omlas}
               scale='piece'
             />

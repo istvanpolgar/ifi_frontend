@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import {
@@ -30,6 +30,8 @@ export default function Team(props) {
   const history = useHistory();
   const classes = useStyles();
 
+  const [team, setTeam] = useState("");
+
   const handleSubmit = (endpoint) => {
     history.push(endpoint);
   }
@@ -49,6 +51,24 @@ export default function Team(props) {
     });
   }
 
+  useEffect(() => {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${props.token}`
+    }
+
+    axios.post(process.env.REACT_APP_API_URL + '/team_info', {}, {headers: headers})
+    .then((response) => {
+      if(!response.data.code){
+        setTeam(response.data.team);
+      }
+      else
+      {
+        console.log(response.data.message);
+      }
+    });
+  },[props.token,team])
+
   return (
     <div className={classes.root}>
       <AppBar className={classes.appbar}>
@@ -64,6 +84,11 @@ export default function Team(props) {
           <ThemeProvider theme={theme}>
             <Typography variant="h5" className={classes.text}>
                 LOG OUT
+            </Typography>
+          </ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <Typography variant="h5" className={classes.text}>
+                Team: {team}
             </Typography>
           </ThemeProvider>
         </Toolbar>

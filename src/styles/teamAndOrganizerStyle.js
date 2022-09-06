@@ -22,6 +22,8 @@ export const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0),
     height: '10vh',
     width: '100vw',
+    display: 'flex',
+    justifyContent: "center",
   },
   paper: {
     display: 'flex',
@@ -42,5 +44,5 @@ export const useStyles = makeStyles((theme) => ({
   icon: {
     width: '5vh',
     height: '5vh',
-  }
+  },
 }));
